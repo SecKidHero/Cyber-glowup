@@ -7,10 +7,23 @@
   <meta name="theme-color" content="#0B0F19">
   <title>Cyber Glow-Up Challenge - Start Your Mission</title>
   
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- 🚨 CRITICAL: Dark theme MUST be applied BEFORE Tailwind CDN 🚨 -->
+  <style>
+    * {
+      background-color: inherit !important;
+    }
+    html, body, #app, .quiz-app {
+      background: #0B0F19 !important;
+      color: #FFFFFF !important;
+    }
+  </style>
+  
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/quizzes.css">
+  
+  <!-- Tailwind AFTER our custom CSS so we have control -->
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="quiz-app">

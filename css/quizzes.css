@@ -514,6 +514,34 @@ html, body, #app, .quiz-app {
   transform: translateY(0);
 }
 
+/* 🚨 CRITICAL: FINAL DARK THEME LOCKDOWN (DO NOT REMOVE) 🚨 */
+/* This ensures dark theme persists even if Tailwind tries to override */
+@media (prefers-color-scheme: light), (prefers-color-scheme: dark) {
+  html, body, #app, .quiz-app, .page, .page-wrapper {
+    background: #0B0F19 !important;
+    color: #FFFFFF !important;
+  }
+}
+
+/* Absolute final override - applies to everything */
+html {
+  background-color: #0B0F19 !important;
+}
+
+body {
+  background-color: #0B0F19 !important;
+  color: #FFFFFF !important;
+}
+
+#app {
+  background: #0B0F19 !important;
+}
+
+.quiz-app {
+  background: #0B0F19 !important;
+  color: #FFFFFF !important;
+}
+
 .cta-button.secondary {
   background: rgba(0, 240, 255, 0.1);
   color: var(--color-primary);
