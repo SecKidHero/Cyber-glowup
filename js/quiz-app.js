@@ -199,29 +199,126 @@ const app = {
   selectAnswer(selectedIndex) {
     this.state.selectedAnswer = selectedIndex;
 
-    // Highlight selected answer
-    document.querySelectorAll('.quiz-answer-btn').forEach((btn, idx) => {
-      if (idx === selectedIndex) {
+    const quiz = this.state.currentQuiz;
+    const questionIndex = this.state.currentQuestionIndex;
+    let questionData;
+
+    if (quiz === 'online-safety') {
+      questionData = QuizData.onlineSafety[questionIndex];
+    } else if (quiz === 'ai-reality') {
+      questionData = QuizData.aiReality[questionIndex];
+    } else if (quiz === 'strength') {
+      questionData = QuizData.strengthQuiz[questionIndex];
+      // Strength quiz doesn't have right/wrong, just selection
+      this.showStrengthAnswerFeedback(selectedIndex);
+      return;
+    }
+
+    // Determine if answer is correct
+    const shuffledAnswers = this.state.currentShuffle;
+    const correctIndex = shuffledAnswers.findIndex(a => a === questionData.answers[questionData.correct]);
+    const isCorrect = selectedIndex === correctIndex;
+
+    // Record the answer
+    if (quiz === 'online-safety') {
+      this.state.onlineSafetyAnswers[questionIndex] = isCorrect;
+    } else if (quiz === 'ai-reality') {
+      this.state.aiRealityAnswers[questionIndex] = isCorrect;
+    }
+
+    // Show feedback
+    this.showAnswerFeedback(selectedIndex, correctIndex, isCorrect, questionData);
+  },
+
+  // SHOW ANSWER FEEDBACK
+  showAnswerFeedback(selectedIndex, correctIndex, isCorrect, questionData) {
+    const buttons = document.querySelectorAll('.quiz-answer-btn');
+    
+    buttons.forEach((btn, idx) => {
+      if (idx === correctIndex) {
+        // Highlight correct answer in green/cyan
+        btn.style.borderColor = '#00F0FF';
+        btn.style.background = 'rgba(0, 240, 255, 0.3)';
+        btn.style.boxShadow = '0 0 20px rgba(0, 240, 255, 0.5)';
+      } else if (idx === selectedIndex && !isCorrect) {
+        // Highlight wrong answer in red/magenta
         btn.style.borderColor = '#FF007A';
         btn.style.background = 'rgba(255, 0, 122, 0.2)';
         btn.style.boxShadow = '0 0 16px rgba(255, 0, 122, 0.3)';
       } else {
-        btn.style.borderColor = '#00F0FF';
-        btn.style.background = 'rgba(22, 28, 45, 0.6)';
-        btn.style.boxShadow = 'none';
+        // Dim other answers
+        btn.style.opacity = '0.5';
       }
+      btn.disabled = true;
     });
+
+    // Show feedback message
+    const feedbackDiv = document.createElement('div');
+    feedbackDiv.className = 'answer-feedback';
+    feedbackDiv.innerHTML = `
+      <div style="padding: 15px; margin-top: 15px; border-radius: 8px; border-left: 4px solid ${isCorrect ? '#00F0FF' : '#FF007A'}; background: ${isCorrect ? 'rgba(0, 240, 255, 0.1)' : 'rgba(255, 0, 122, 0.1)'};">
+        <p style="margin: 0; color: ${isCorrect ? '#00F0FF' : '#FF007A'}; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">
+          ${isCorrect ? '✓ Correct!' : '✗ Incorrect'}
+        </p>
+        ${!isCorrect ? `<p style="margin: 0; color: #FFFFFF; font-size: 0.95rem;">
+          <strong>Correct Answer:</strong> ${questionData.answers[questionData.correct]}
+        </p>` : ''}
+        ${questionData.explanation ? `<p style="margin: 8px 0 0 0; color: #94A3B8; font-size: 0.9rem;">
+          ${questionData.explanation}
+        </p>` : ''}
+      </div>
+    `;
+
+    // Insert feedback after questions
+    const quizAnswers = document.querySelector('.quiz-answers');
+    quizAnswers.parentNode.insertBefore(feedbackDiv, quizAnswers.nextSibling);
 
     // Show next button
     const quiz = this.state.currentQuiz;
     let nextBtnId;
     if (quiz === 'online-safety') nextBtnId = 'safety-next-btn';
     else if (quiz === 'ai-reality') nextBtnId = 'ai-next-btn';
-    else if (quiz === 'strength') nextBtnId = 'strength-next-btn';
 
     const nextBtn = document.getElementById(nextBtnId);
     if (nextBtn) {
       nextBtn.style.display = 'block';
+      nextBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  },
+
+  // SHOW STRENGTH ANSWER FEEDBACK (no right/wrong, just selection)
+  showStrengthAnswerFeedback(selectedIndex) {
+    const buttons = document.querySelectorAll('.quiz-answer-btn');
+    
+    buttons.forEach((btn, idx) => {
+      if (idx === selectedIndex) {
+        btn.style.borderColor = '#00F0FF';
+        btn.style.background = 'rgba(0, 240, 255, 0.3)';
+        btn.style.boxShadow = '0 0 20px rgba(0, 240, 255, 0.5)';
+      } else {
+        btn.style.opacity = '0.5';
+      }
+      btn.disabled = true;
+    });
+
+    // Show feedback message
+    const feedbackDiv = document.createElement('div');
+    feedbackDiv.className = 'answer-feedback';
+    feedbackDiv.innerHTML = `
+      <div style="padding: 15px; margin-top: 15px; border-radius: 8px; border-left: 4px solid #00F0FF; background: rgba(0, 240, 255, 0.1);">
+        <p style="margin: 0; color: #00F0FF; font-weight: 700; font-size: 1.1rem;">✓ Answer Recorded</p>
+      </div>
+    `;
+
+    // Insert feedback after questions
+    const quizAnswers = document.querySelector('.quiz-answers');
+    quizAnswers.parentNode.insertBefore(feedbackDiv, quizAnswers.nextSibling);
+
+    // Show next button
+    const nextBtn = document.getElementById('strength-next-btn');
+    if (nextBtn) {
+      nextBtn.style.display = 'block';
+      nextBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   },
 
@@ -231,22 +328,6 @@ const app = {
 
     const quiz = this.state.currentQuiz;
     const questionIndex = this.state.currentQuestionIndex;
-    let questionData;
-
-    if (quiz === 'online-safety') {
-      questionData = QuizData.onlineSafety[questionIndex];
-      const shuffledAnswers = this.state.currentShuffle;
-      const correctIndex = shuffledAnswers.findIndex(a => a === questionData.answers[questionData.correct]);
-      this.state.onlineSafetyAnswers[questionIndex] = this.state.selectedAnswer === correctIndex;
-    } else if (quiz === 'ai-reality') {
-      questionData = QuizData.aiReality[questionIndex];
-      const shuffledAnswers = this.state.currentShuffle;
-      const correctIndex = shuffledAnswers.findIndex(a => a === questionData.answers[questionData.correct]);
-      this.state.aiRealityAnswers[questionIndex] = this.state.selectedAnswer === correctIndex;
-    } else if (quiz === 'strength') {
-      questionData = QuizData.strengthQuiz[questionIndex];
-      this.state.strengthQuizAnswers[questionIndex] = questionData.answers[this.state.selectedAnswer].archetype;
-    }
 
     this.state.currentQuestionIndex++;
     this.state.selectedAnswer = null;

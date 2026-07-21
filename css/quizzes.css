@@ -244,6 +244,22 @@
   background: rgba(22, 28, 45, 1);
 }
 
+/* ANSWER FEEDBACK */
+.answer-feedback {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* QUIZ CONTROLS */
 .quiz-controls {
   display: flex;
