@@ -1,12 +1,16 @@
 /* ========================================
    CYBER GLOW-UP CHALLENGE v2.1
-   Quiz Styles
+   Quiz Styles - Dark Cyberpunk Theme
    ======================================== */
+
+* {
+  box-sizing: border-box;
+}
 
 /* PAGE LAYOUT */
 .quiz-app {
-  background: var(--color-background);
-  color: var(--color-text);
+  background: #0B0F19 !important;
+  color: #FFFFFF;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
@@ -17,6 +21,7 @@
   min-height: 100vh;
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
+  background: #0B0F19;
 }
 
 .page.active {
@@ -27,30 +32,38 @@
 .page-wrapper {
   max-width: 800px;
   margin: 0 auto;
-  padding: var(--spacing-lg);
+  padding: 20px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: #0B0F19;
+}
+
+@media (min-width: 768px) {
+  .page-wrapper {
+    padding: 40px 20px;
+  }
 }
 
 /* BACK BUTTON */
 .back-btn {
   align-self: flex-start;
-  margin-bottom: var(--spacing-lg);
-  padding: var(--spacing-sm) var(--spacing-md);
+  margin-bottom: 20px;
+  padding: 10px 16px;
   background: transparent;
-  border: 2px solid var(--color-primary);
-  color: var(--color-primary);
+  border: 2px solid #00F0FF;
+  color: #00F0FF;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 0.95rem;
+  font-family: inherit;
 }
 
 .back-btn:hover {
   background: rgba(0, 240, 255, 0.1);
-  box-shadow: 0 0 12px var(--color-primary);
+  box-shadow: 0 0 12px #00F0FF;
 }
 
 .back-btn:active {
@@ -66,32 +79,33 @@
 }
 
 .quiz-header {
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: 30px;
   text-align: center;
 }
 
 .quiz-header h1 {
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 800;
-  margin-bottom: var(--spacing-sm);
-  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #00F0FF, #FF007A);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  color: #00F0FF;
 }
 
 .quiz-subtitle {
-  color: var(--color-muted);
-  font-size: 1.1rem;
-  margin-bottom: var(--spacing-md);
+  color: #94A3B8;
+  font-size: 1rem;
+  margin-bottom: 15px;
 }
 
 /* REGISTRATION FORM */
 .registration-form {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
-  margin-top: var(--spacing-lg);
+  gap: 15px;
+  margin-top: 30px;
 }
 
 .form-group {
@@ -100,17 +114,17 @@
 }
 
 .form-group label {
-  margin-bottom: var(--spacing-xs);
+  margin-bottom: 8px;
   font-weight: 600;
-  color: var(--color-text);
+  color: #FFFFFF;
   font-size: 0.95rem;
 }
 
 .form-group input {
-  padding: var(--spacing-md);
-  background: rgba(22, 28, 45, 0.5);
-  border: 2px solid var(--color-primary);
-  color: var(--color-text);
+  padding: 15px;
+  background: rgba(22, 28, 45, 0.6);
+  border: 2px solid #00F0FF;
+  color: #FFFFFF;
   border-radius: 8px;
   font-size: 1rem;
   transition: all 0.3s ease;
@@ -118,34 +132,34 @@
 }
 
 .form-group input::placeholder {
-  color: var(--color-muted);
+  color: #94A3B8;
 }
 
 .form-group input:focus {
   outline: none;
-  background: rgba(22, 28, 45, 0.8);
-  border-color: var(--color-secondary);
+  background: rgba(22, 28, 45, 0.9);
+  border-color: #FF007A;
   box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
 }
 
 /* PROGRESS BAR */
 .quiz-progress {
-  margin-top: var(--spacing-md);
+  margin-top: 15px;
 }
 
 .quiz-progress span {
   display: block;
   text-align: center;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: 10px;
   font-size: 0.9rem;
-  color: var(--color-muted);
+  color: #94A3B8;
 }
 
 .progress-bar {
   width: 100%;
   height: 8px;
   background: rgba(22, 28, 45, 0.8);
-  border: 1px solid var(--color-primary);
+  border: 1px solid #00F0FF;
   border-radius: 4px;
   overflow: hidden;
   box-shadow: inset 0 0 8px rgba(0, 240, 255, 0.2);
@@ -153,40 +167,42 @@
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  background: linear-gradient(90deg, #00F0FF, #FF007A);
   width: 0%;
   transition: width 0.4s ease;
-  box-shadow: 0 0 12px var(--color-primary);
+  box-shadow: 0 0 12px #00F0FF;
 }
 
 /* QUIZ QUESTION */
 .quiz-question {
-  margin-top: var(--spacing-lg);
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 .quiz-question h2 {
-  font-size: 1.5rem;
-  margin-bottom: var(--spacing-lg);
+  font-size: 1.3rem;
+  margin-bottom: 20px;
   line-height: 1.5;
-  color: var(--color-text);
+  color: #FFFFFF;
 }
 
 /* QUIZ ANSWERS */
 .quiz-answers {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: 15px;
+  margin-bottom: 30px;
 }
 
 .quiz-answer-btn {
   display: flex;
   align-items: flex-start;
-  gap: var(--spacing-md);
-  padding: var(--spacing-md);
+  gap: 15px;
+  padding: 15px;
   background: rgba(22, 28, 45, 0.6);
-  border: 2px solid var(--color-primary);
+  border: 2px solid #00F0FF;
   border-radius: 8px;
-  color: var(--color-text);
+  color: #FFFFFF;
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: left;
@@ -201,9 +217,9 @@
   justify-content: center;
   width: 40px;
   height: 40px;
-  background: var(--color-primary);
+  background: #00F0FF;
   border-radius: 50%;
-  color: var(--color-background);
+  color: #0B0F19;
   font-weight: 700;
   flex-shrink: 0;
   font-size: 1.1rem;
@@ -218,7 +234,7 @@
 
 .quiz-answer-btn:hover {
   background: rgba(22, 28, 45, 0.9);
-  border-color: var(--color-secondary);
+  border-color: #FF007A;
   box-shadow: 0 0 16px rgba(0, 240, 255, 0.3);
   transform: translateX(4px);
 }
@@ -228,159 +244,20 @@
   background: rgba(22, 28, 45, 1);
 }
 
-/* CAREER REVEAL */
-.career-reveal-container {
-  padding-bottom: var(--spacing-xl);
-}
-
-.archetype-reveal {
-  margin-top: var(--spacing-lg);
-  padding: var(--spacing-lg);
-  background: linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(255, 0, 122, 0.05));
-  border: 2px solid var(--color-primary);
-  border-radius: 12px;
-  text-align: center;
-}
-
-.archetype-icon {
-  font-size: 4rem;
-  margin-bottom: var(--spacing-md);
-}
-
-.archetype-reveal h2 {
-  font-size: 2.5rem;
-  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: var(--spacing-sm);
-}
-
-.archetype-tagline {
-  font-size: 1.2rem;
-  font-style: italic;
-  color: var(--color-muted);
-  margin-bottom: var(--spacing-lg);
-}
-
-.archetype-description {
-  font-size: 1.05rem;
-  line-height: 1.6;
-  margin-bottom: var(--spacing-lg);
-  color: var(--color-text);
-}
-
-.archetype-roles {
-  margin-bottom: var(--spacing-lg);
-  text-align: left;
-}
-
-.archetype-roles h3 {
-  font-size: 1.1rem;
-  margin-bottom: var(--spacing-md);
-  color: var(--color-primary);
-}
-
-.archetype-roles ul {
-  list-style: none;
-  padding: 0;
-}
-
-.archetype-roles li {
-  padding: var(--spacing-sm) 0;
-  padding-left: var(--spacing-md);
-  border-left: 3px solid var(--color-primary);
-  margin-bottom: var(--spacing-sm);
-}
-
-.archetype-skills {
-  margin-bottom: var(--spacing-lg);
-  text-align: left;
-}
-
-.archetype-skills h3 {
-  font-size: 1.1rem;
-  margin-bottom: var(--spacing-md);
-  color: var(--color-primary);
-}
-
-.skills-list {
+/* QUIZ CONTROLS */
+.quiz-controls {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-sm);
+  gap: 15px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 240, 255, 0.2);
 }
 
-.skill-tag {
-  display: inline-block;
-  padding: var(--spacing-xs) var(--spacing-sm);
-  background: rgba(0, 240, 255, 0.15);
-  border: 1px solid var(--color-primary);
-  border-radius: 20px;
-  font-size: 0.9rem;
-  color: var(--color-primary);
-  font-weight: 600;
-}
-
-.archetype-user-info {
-  background: rgba(22, 28, 45, 0.6);
-  padding: var(--spacing-md);
-  border-radius: 8px;
-  margin-bottom: var(--spacing-lg);
-  text-align: left;
-  font-size: 0.95rem;
-}
-
-.archetype-user-info p {
-  margin: var(--spacing-xs) 0;
-}
-
-.archetype-user-info strong {
-  color: var(--color-primary);
-}
-
-.niccs-explore {
-  background: rgba(0, 240, 255, 0.1);
-  border: 1px solid var(--color-primary);
-  padding: var(--spacing-md) var(--spacing-lg);
-  border-radius: 8px;
-  margin-bottom: var(--spacing-lg);
-  text-align: center;
-}
-
-.niccs-explore p {
-  margin-bottom: var(--spacing-md);
-  color: var(--color-text);
-  font-size: 0.95rem;
-}
-
-.niccs-link {
-  display: inline-block;
-  padding: var(--spacing-md) var(--spacing-lg);
-  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-  color: var(--color-background);
-  text-decoration: none;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.niccs-link:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 240, 255, 0.4);
-}
-
-/* CAREER ACTIONS */
-.career-actions {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-  margin-top: var(--spacing-lg);
-}
-
-.cta-button {
-  padding: var(--spacing-md) var(--spacing-lg);
-  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-  color: var(--color-background);
+.next-btn {
+  flex: 1;
+  padding: 15px 20px;
+  background: linear-gradient(135deg, #00F0FF, #FF007A);
+  color: #0B0F19;
   border: none;
   border-radius: 8px;
   font-size: 1rem;
@@ -392,6 +269,32 @@
   letter-spacing: 0.5px;
 }
 
+.next-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 240, 255, 0.4);
+}
+
+.next-btn:active {
+  transform: translateY(0);
+}
+
+/* CTA BUTTON - Registration & Career */
+.cta-button {
+  padding: 15px 20px;
+  background: linear-gradient(135deg, #00F0FF, #FF007A);
+  color: #0B0F19;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  width: 100%;
+}
+
 .cta-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(0, 240, 255, 0.4);
@@ -401,22 +304,262 @@
   transform: translateY(0);
 }
 
-.cta-button.secondary {
-  background: rgba(0, 240, 255, 0.1);
-  color: var(--color-primary);
-  border: 2px solid var(--color-primary);
+/* CAREER REVEAL */
+.career-reveal-container {
+  padding-bottom: 40px;
 }
 
-.cta-button.secondary:hover {
+/* ARCHETYPE CARDS - Overlapping Design */
+.archetype-cards-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 250px;
+  margin-bottom: 40px;
+  perspective: 1000px;
+}
+
+.archetype-card {
+  position: relative;
+  width: 160px;
+  height: 220px;
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(255, 0, 122, 0.1));
+  border: 2px solid #00F0FF;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  text-align: center;
+  transform-style: preserve-3d;
+}
+
+.archetype-card:nth-child(1) {
+  transform: translateX(60px) rotateY(-15deg) translateZ(0);
+  z-index: 1;
+}
+
+.archetype-card:nth-child(2) {
+  transform: translateX(-60px) rotateY(15deg) translateZ(0);
+  z-index: 1;
+}
+
+.archetype-card:nth-child(3) {
+  transform: translateZ(40px) scaleZ(1.1);
+  z-index: 3;
+  border-color: #FF007A;
+  box-shadow: 0 0 30px rgba(255, 0, 122, 0.5);
+}
+
+.archetype-card:nth-child(4) {
+  transform: translateX(-60px) rotateY(-15deg) translateZ(0);
+  z-index: 1;
+}
+
+.archetype-card:nth-child(5) {
+  transform: translateX(60px) rotateY(15deg) translateZ(0);
+  z-index: 1;
+}
+
+.card-icon {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.card-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #00F0FF;
+  margin-bottom: 8px;
+}
+
+.card-stars {
+  font-size: 1rem;
+  color: #FFD700;
+}
+
+/* ARCHETYPE REVEAL SECTION */
+.archetype-reveal {
+  margin-top: 30px;
+  padding: 25px;
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(255, 0, 122, 0.05));
+  border: 2px solid #FF007A;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.archetype-icon {
+  font-size: 4rem;
+  margin-bottom: 15px;
+}
+
+.archetype-reveal h2 {
+  font-size: 2.2rem;
+  background: linear-gradient(135deg, #00F0FF, #FF007A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 10px;
+  font-weight: 800;
+}
+
+.archetype-tagline {
+  font-size: 1.1rem;
+  font-style: italic;
+  color: #94A3B8;
+  margin-bottom: 20px;
+}
+
+.archetype-description {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 25px;
+  color: #FFFFFF;
+}
+
+.archetype-roles {
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+.archetype-roles h3 {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  color: #00F0FF;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.archetype-roles ul {
+  list-style: none;
+  padding: 0;
+}
+
+.archetype-roles li {
+  padding: 10px 0;
+  padding-left: 15px;
+  border-left: 3px solid #00F0FF;
+  margin-bottom: 8px;
+  color: #FFFFFF;
+}
+
+.archetype-skills {
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+.archetype-skills h3 {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  color: #00F0FF;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.skill-tag {
+  display: inline-block;
+  padding: 8px 12px;
+  background: rgba(0, 240, 255, 0.15);
+  border: 1px solid #00F0FF;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  color: #00F0FF;
+  font-weight: 600;
+}
+
+.archetype-user-info {
+  background: rgba(22, 28, 45, 0.6);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  text-align: left;
+  font-size: 0.95rem;
+  border-left: 3px solid #00F0FF;
+}
+
+.archetype-user-info p {
+  margin: 8px 0;
+  color: #FFFFFF;
+}
+
+.archetype-user-info strong {
+  color: #00F0FF;
+}
+
+/* NICCS EXPLORE SECTION */
+.niccs-explore {
+  background: rgba(0, 240, 255, 0.1);
+  border: 2px solid #00F0FF;
+  padding: 20px 25px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.niccs-explore p {
+  margin-bottom: 15px;
+  color: #FFFFFF;
+  font-size: 0.95rem;
+}
+
+.niccs-link {
+  display: inline-block;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #00F0FF, #FF007A);
+  color: #0B0F19;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.niccs-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 240, 255, 0.4);
+}
+
+/* CAREER ACTIONS */
+.career-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.secondary-btn {
+  padding: 12px 20px;
+  background: rgba(0, 240, 255, 0.1);
+  color: #00F0FF;
+  border: 2px solid #00F0FF;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.secondary-btn:hover {
   background: rgba(0, 240, 255, 0.2);
   box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
 }
 
-/* RESPONSIVE */
+/* RESPONSIVE DESIGN */
 @media (max-width: 768px) {
   .page-wrapper {
-    padding: var(--spacing-md);
-    padding-top: var(--spacing-lg);
+    padding: 15px;
   }
 
   .quiz-header h1 {
@@ -429,7 +572,7 @@
 
   .quiz-answer-btn {
     min-height: 60px;
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding: 12px;
   }
 
   .answer-letter {
@@ -438,26 +581,43 @@
     font-size: 0.95rem;
   }
 
-  .archetype-icon {
-    font-size: 3rem;
+  .archetype-card {
+    width: 130px;
+    height: 180px;
+  }
+
+  .archetype-card:nth-child(1) {
+    transform: translateX(40px) rotateY(-15deg) translateZ(0);
+  }
+
+  .archetype-card:nth-child(2) {
+    transform: translateX(-40px) rotateY(15deg) translateZ(0);
+  }
+
+  .archetype-card:nth-child(4) {
+    transform: translateX(-40px) rotateY(-15deg) translateZ(0);
+  }
+
+  .archetype-card:nth-child(5) {
+    transform: translateX(40px) rotateY(15deg) translateZ(0);
+  }
+
+  .card-icon {
+    font-size: 2rem;
   }
 
   .archetype-reveal h2 {
     font-size: 1.8rem;
   }
 
-  .career-actions {
-    flex-direction: column;
-  }
-
-  .cta-button {
-    width: 100%;
+  .archetype-icon {
+    font-size: 3rem;
   }
 }
 
 @media (max-width: 480px) {
   .page-wrapper {
-    padding: var(--spacing-sm);
+    padding: 12px;
   }
 
   .quiz-header h1 {
@@ -470,8 +630,8 @@
 
   .quiz-answer-btn {
     min-height: 50px;
-    padding: var(--spacing-sm);
-    gap: var(--spacing-sm);
+    padding: 10px;
+    gap: 10px;
   }
 
   .answer-letter {
@@ -485,6 +645,51 @@
   }
 
   .archetype-reveal {
-    padding: var(--spacing-md);
+    padding: 15px;
+  }
+
+  .archetype-card {
+    width: 110px;
+    height: 150px;
+  }
+
+  .archetype-card:nth-child(1) {
+    transform: translateX(25px) rotateY(-12deg) translateZ(0);
+  }
+
+  .archetype-card:nth-child(2) {
+    transform: translateX(-25px) rotateY(12deg) translateZ(0);
+  }
+
+  .archetype-card:nth-child(4) {
+    transform: translateX(-25px) rotateY(-12deg) translateZ(0);
+  }
+
+  .archetype-card:nth-child(5) {
+    transform: translateX(25px) rotateY(12deg) translateZ(0);
+  }
+
+  .card-icon {
+    font-size: 1.8rem;
+  }
+
+  .card-name {
+    font-size: 0.85rem;
+  }
+
+  .archetype-reveal h2 {
+    font-size: 1.5rem;
+  }
+
+  .archetype-icon {
+    font-size: 2.5rem;
+  }
+
+  .quiz-controls {
+    flex-direction: column;
+  }
+
+  .next-btn {
+    width: 100%;
   }
 }

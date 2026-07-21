@@ -1,6 +1,6 @@
 /* ========================================
    CYBER GLOW-UP CHALLENGE v2.1
-   Quiz Application Logic
+   Quiz Application Logic - Fixed
    ======================================== */
 
 const app = {
@@ -14,7 +14,11 @@ const app = {
     aiRealityAnswers: [],
     strengthQuizAnswers: [],
     matchedArchetype: null,
-    pageHistory: [] // Track navigation for back button
+    pageHistory: [], // Track navigation for back button
+    currentQuiz: null, // Which quiz we're on
+    currentQuestionIndex: 0, // Which question in the quiz
+    selectedAnswer: null, // Currently selected answer
+    currentShuffle: null // Store current shuffle for consistency
   },
 
   // Initialize app
@@ -55,7 +59,15 @@ const app = {
     if (this.state.pageHistory.length > 1) {
       this.state.pageHistory.pop(); // Remove current page
       const previousPage = this.state.pageHistory[this.state.pageHistory.length - 1];
-      this.showPage(previousPage);
+      
+      // If going back during a quiz, go to previous question
+      if (this.state.currentPage.includes('quiz') && this.state.currentQuestionIndex > 0) {
+        this.state.currentQuestionIndex--;
+        this.state.selectedAnswer = null;
+        this.renderCurrentQuestion();
+      } else {
+        this.showPage(previousPage);
+      }
     }
   },
 
@@ -68,6 +80,9 @@ const app = {
     this.state.aiRealityAnswers = [];
     this.state.strengthQuizAnswers = [];
     this.state.matchedArchetype = null;
+    this.state.currentQuiz = null;
+    this.state.currentQuestionIndex = 0;
+    this.state.selectedAnswer = null;
     this.showPage('registration');
   },
 
@@ -91,87 +106,79 @@ const app = {
   // ONLINE SAFETY QUIZ
   startOnlineSafetyQuiz() {
     this.state.onlineSafetyAnswers = [];
-    this.renderOnlineSafetyQuestion(0);
+    this.state.currentQuiz = 'online-safety';
+    this.state.currentQuestionIndex = 0;
+    this.state.selectedAnswer = null;
+    this.renderCurrentQuestion();
     this.showPage('online-safety-quiz');
-  },
-
-  renderOnlineSafetyQuestion(questionIndex) {
-    const question = QuizData.onlineSafety[questionIndex];
-    const container = document.getElementById('safety-quiz-content');
-    
-    // Update progress
-    document.getElementById('safety-progress').textContent = `Question ${questionIndex + 1} of 5`;
-    const progress = ((questionIndex + 1) / 5) * 100;
-    document.getElementById('safety-progress-fill').style.width = progress + '%';
-
-    // Randomize answers
-    const shuffledAnswers = this.shuffleAnswers(question.answers, question.correct);
-
-    let html = `
-      <div class="quiz-question">
-        <h2>${question.question}</h2>
-        <div class="quiz-answers">
-    `;
-
-    shuffledAnswers.forEach((answer, idx) => {
-      html += `
-        <button class="quiz-answer-btn" data-index="${idx}" onclick="app.answerOnlineSafetyQuestion(${questionIndex}, ${idx})">
-          <span class="answer-letter">${String.fromCharCode(65 + idx)}</span>
-          <span class="answer-text">${answer}</span>
-        </button>
-      `;
-    });
-
-    html += `</div></div>`;
-    container.innerHTML = html;
-  },
-
-  answerOnlineSafetyQuestion(questionIndex, selectedIndex) {
-    const question = QuizData.onlineSafety[questionIndex];
-    const shuffledAnswers = this.shuffleAnswers(question.answers, question.correct);
-    
-    // Find correct answer in shuffled array
-    const correctIndex = shuffledAnswers.findIndex(a => a === question.answers[question.correct]);
-    
-    this.state.onlineSafetyAnswers[questionIndex] = selectedIndex === correctIndex;
-
-    if (questionIndex < 4) {
-      // Next question
-      this.renderOnlineSafetyQuestion(questionIndex + 1);
-    } else {
-      // Move to AI Reality Check
-      this.startAIRealityQuiz();
-    }
   },
 
   // AI REALITY QUIZ
   startAIRealityQuiz() {
     this.state.aiRealityAnswers = [];
-    this.renderAIRealityQuestion(0);
+    this.state.currentQuiz = 'ai-reality';
+    this.state.currentQuestionIndex = 0;
+    this.state.selectedAnswer = null;
+    this.renderCurrentQuestion();
     this.showPage('ai-reality-quiz');
   },
 
-  renderAIRealityQuestion(questionIndex) {
-    const question = QuizData.aiReality[questionIndex];
-    const container = document.getElementById('ai-quiz-content');
-    
-    // Update progress
-    document.getElementById('ai-progress').textContent = `Question ${questionIndex + 1} of 5`;
-    const progress = ((questionIndex + 1) / 5) * 100;
-    document.getElementById('ai-progress-fill').style.width = progress + '%';
+  // STRENGTH QUIZ
+  startStrengthQuiz() {
+    this.state.strengthQuizAnswers = [];
+    this.state.currentQuiz = 'strength';
+    this.state.currentQuestionIndex = 0;
+    this.state.selectedAnswer = null;
+    this.renderCurrentQuestion();
+    this.showPage('strength-quiz');
+  },
 
-    // Randomize answers
-    const shuffledAnswers = this.shuffleAnswers(question.answers, question.correct);
+  // RENDER CURRENT QUESTION
+  renderCurrentQuestion() {
+    const quiz = this.state.currentQuiz;
+    const questionIndex = this.state.currentQuestionIndex;
+
+    let questionData, containerId, progressId, progressFillId, nextBtnId;
+
+    if (quiz === 'online-safety') {
+      questionData = QuizData.onlineSafety[questionIndex];
+      containerId = 'safety-quiz-content';
+      progressId = 'safety-progress';
+      progressFillId = 'safety-progress-fill';
+      nextBtnId = 'safety-next-btn';
+    } else if (quiz === 'ai-reality') {
+      questionData = QuizData.aiReality[questionIndex];
+      containerId = 'ai-quiz-content';
+      progressId = 'ai-progress';
+      progressFillId = 'ai-progress-fill';
+      nextBtnId = 'ai-next-btn';
+    } else if (quiz === 'strength') {
+      questionData = QuizData.strengthQuiz[questionIndex];
+      containerId = 'strength-quiz-content';
+      progressId = 'strength-progress';
+      progressFillId = 'strength-progress-fill';
+      nextBtnId = 'strength-next-btn';
+    }
+
+    const container = document.getElementById(containerId);
+
+    // Update progress
+    document.getElementById(progressId).textContent = `Question ${questionIndex + 1} of 5`;
+    const progress = ((questionIndex + 1) / 5) * 100;
+    document.getElementById(progressFillId).style.width = progress + '%';
+
+    // Randomize answers and store shuffle
+    this.state.currentShuffle = this.shuffleAnswers(questionData.answers, questionData.correct);
 
     let html = `
       <div class="quiz-question">
-        <h2>${question.question}</h2>
+        <h2>${questionData.question}</h2>
         <div class="quiz-answers">
     `;
 
-    shuffledAnswers.forEach((answer, idx) => {
+    this.state.currentShuffle.forEach((answer, idx) => {
       html += `
-        <button class="quiz-answer-btn" data-index="${idx}" onclick="app.answerAIRealityQuestion(${questionIndex}, ${idx})">
+        <button class="quiz-answer-btn" data-index="${idx}" onclick="app.selectAnswer(${idx})">
           <span class="answer-letter">${String.fromCharCode(65 + idx)}</span>
           <span class="answer-text">${answer}</span>
         </button>
@@ -180,122 +187,149 @@ const app = {
 
     html += `</div></div>`;
     container.innerHTML = html;
-  },
 
-  answerAIRealityQuestion(questionIndex, selectedIndex) {
-    const question = QuizData.aiReality[questionIndex];
-    const shuffledAnswers = this.shuffleAnswers(question.answers, question.correct);
-    
-    const correctIndex = shuffledAnswers.findIndex(a => a === question.answers[question.correct]);
-    
-    this.state.aiRealityAnswers[questionIndex] = selectedIndex === correctIndex;
-
-    if (questionIndex < 4) {
-      // Next question
-      this.renderAIRealityQuestion(questionIndex + 1);
-    } else {
-      // Move to Strength Quiz
-      this.startStrengthQuiz();
+    // Hide next button initially
+    const nextBtn = document.getElementById(nextBtnId);
+    if (nextBtn) {
+      nextBtn.style.display = 'none';
     }
   },
 
-  // STRENGTH/CAREER APTITUDE QUIZ
-  startStrengthQuiz() {
-    this.state.strengthQuizAnswers = [];
-    this.renderStrengthQuestion(0);
-    this.showPage('strength-quiz');
-  },
+  // SELECT ANSWER
+  selectAnswer(selectedIndex) {
+    this.state.selectedAnswer = selectedIndex;
 
-  renderStrengthQuestion(questionIndex) {
-    const question = QuizData.strengthQuiz[questionIndex];
-    const container = document.getElementById('strength-quiz-content');
-    
-    // Update progress
-    document.getElementById('strength-progress').textContent = `Question ${questionIndex + 1} of 5`;
-    const progress = ((questionIndex + 1) / 5) * 100;
-    document.getElementById('strength-progress-fill').style.width = progress + '%';
-
-    // Shuffle answers
-    const shuffledAnswers = [...question.answers].sort(() => Math.random() - 0.5);
-
-    let html = `
-      <div class="quiz-question">
-        <h2>${question.question}</h2>
-        <div class="quiz-answers">
-    `;
-
-    shuffledAnswers.forEach((answer, idx) => {
-      html += `
-        <button class="quiz-answer-btn" data-index="${idx}" onclick="app.answerStrengthQuestion(${questionIndex}, ${idx})">
-          <span class="answer-letter">${String.fromCharCode(65 + idx)}</span>
-          <span class="answer-text">${answer.text}</span>
-        </button>
-      `;
-    });
-
-    html += `</div></div>`;
-    container.innerHTML = html;
-  },
-
-  answerStrengthQuestion(questionIndex, selectedIndex) {
-    const question = QuizData.strengthQuiz[questionIndex];
-    const shuffledAnswers = [...question.answers].sort(() => Math.random() - 0.5);
-    
-    const selectedAnswer = shuffledAnswers[selectedIndex];
-    this.state.strengthQuizAnswers.push(selectedAnswer.archetype);
-
-    if (questionIndex < 4) {
-      // Next question
-      this.renderStrengthQuestion(questionIndex + 1);
-    } else {
-      // Calculate archetype and show career reveal
-      this.calculateArchetype();
-      this.showCareerReveal();
-    }
-  },
-
-  // ARCHETYPE MATCHING
-  calculateArchetype() {
-    // Count responses per archetype
-    const archetypeCounts = {
-      investigator: 0,
-      builder: 0,
-      protector: 0,
-      strategist: 0,
-      connector: 0,
-      none: 0
-    };
-
-    this.state.strengthQuizAnswers.forEach(archetype => {
-      if (archetypeCounts.hasOwnProperty(archetype)) {
-        archetypeCounts[archetype]++;
+    // Highlight selected answer
+    document.querySelectorAll('.quiz-answer-btn').forEach((btn, idx) => {
+      if (idx === selectedIndex) {
+        btn.style.borderColor = '#FF007A';
+        btn.style.background = 'rgba(255, 0, 122, 0.2)';
+        btn.style.boxShadow = '0 0 16px rgba(255, 0, 122, 0.3)';
+      } else {
+        btn.style.borderColor = '#00F0FF';
+        btn.style.background = 'rgba(22, 28, 45, 0.6)';
+        btn.style.boxShadow = 'none';
       }
     });
 
-    // Find the best match (highest count)
-    let bestMatch = 'investigator';
+    // Show next button
+    const quiz = this.state.currentQuiz;
+    let nextBtnId;
+    if (quiz === 'online-safety') nextBtnId = 'safety-next-btn';
+    else if (quiz === 'ai-reality') nextBtnId = 'ai-next-btn';
+    else if (quiz === 'strength') nextBtnId = 'strength-next-btn';
+
+    const nextBtn = document.getElementById(nextBtnId);
+    if (nextBtn) {
+      nextBtn.style.display = 'block';
+    }
+  },
+
+  // NEXT QUESTION
+  nextQuestion() {
+    if (this.state.selectedAnswer === null) return;
+
+    const quiz = this.state.currentQuiz;
+    const questionIndex = this.state.currentQuestionIndex;
+    let questionData;
+
+    if (quiz === 'online-safety') {
+      questionData = QuizData.onlineSafety[questionIndex];
+      const shuffledAnswers = this.state.currentShuffle;
+      const correctIndex = shuffledAnswers.findIndex(a => a === questionData.answers[questionData.correct]);
+      this.state.onlineSafetyAnswers[questionIndex] = this.state.selectedAnswer === correctIndex;
+    } else if (quiz === 'ai-reality') {
+      questionData = QuizData.aiReality[questionIndex];
+      const shuffledAnswers = this.state.currentShuffle;
+      const correctIndex = shuffledAnswers.findIndex(a => a === questionData.answers[questionData.correct]);
+      this.state.aiRealityAnswers[questionIndex] = this.state.selectedAnswer === correctIndex;
+    } else if (quiz === 'strength') {
+      questionData = QuizData.strengthQuiz[questionIndex];
+      this.state.strengthQuizAnswers[questionIndex] = questionData.answers[this.state.selectedAnswer].archetype;
+    }
+
+    this.state.currentQuestionIndex++;
+    this.state.selectedAnswer = null;
+
+    // Check if we're done with this quiz
+    if (this.state.currentQuestionIndex >= 5) {
+      if (quiz === 'online-safety') {
+        this.startAIRealityQuiz();
+      } else if (quiz === 'ai-reality') {
+        this.startStrengthQuiz();
+      } else if (quiz === 'strength') {
+        // Calculate archetype match
+        this.calculateArchetypeMatch();
+        this.showCareerReveal();
+      }
+    } else {
+      this.renderCurrentQuestion();
+    }
+  },
+
+  // CALCULATE ARCHETYPE MATCH
+  calculateArchetypeMatch() {
+    // Count archetype occurrences from strength quiz
+    const archetypeCounts = {};
+    
+    this.state.strengthQuizAnswers.forEach(archetype => {
+      archetypeCounts[archetype] = (archetypeCounts[archetype] || 0) + 1;
+    });
+
+    // Find the archetype with the most matches
     let maxCount = 0;
+    let matchedArchetype = null;
 
     for (const [archetype, count] of Object.entries(archetypeCounts)) {
       if (count > maxCount) {
         maxCount = count;
-        bestMatch = archetype;
+        matchedArchetype = archetype;
       }
     }
 
-    this.state.matchedArchetype = bestMatch;
+    this.state.matchedArchetype = matchedArchetype;
   },
 
-  // CAREER REVEAL
+  // SHOW CAREER REVEAL
   showCareerReveal() {
     const archetype = QuizData.archetypeProfiles[this.state.matchedArchetype];
     const container = document.getElementById('career-reveal-content');
+    const cardsContainer = document.getElementById('archetype-cards-display');
 
+    // Display user name
     document.getElementById('reveal-name').textContent = this.state.userName;
 
-    let html = `
+    // Display all archetype cards (with matched one highlighted)
+    let cardsHtml = '';
+    const archetypeOrder = ['investigator', 'builder', 'protector', 'strategist', 'connector'];
+    
+    archetypeOrder.forEach(id => {
+      const arch = QuizData.archetypeProfiles[id];
+      const isMatched = id === this.state.matchedArchetype;
+      const iconEmoji = {
+        'investigator': '🔍',
+        'builder': '🔧',
+        'protector': '🛡️',
+        'strategist': '♞',
+        'connector': '🎯'
+      }[id];
+
+      cardsHtml += `
+        <div class="archetype-card" style="${isMatched ? 'border-color: #FF007A; box-shadow: 0 0 30px rgba(255, 0, 122, 0.5);' : ''}">
+          <div class="card-icon">${iconEmoji}</div>
+          <div class="card-name">${arch.name}</div>
+          <div class="card-stars">${'⭐'.repeat(id === this.state.matchedArchetype ? 3 : 2)}</div>
+        </div>
+      `;
+    });
+
+    cardsContainer.innerHTML = cardsHtml;
+
+    // Display matched archetype details
+    const html = `
       <div class="archetype-reveal">
-        <div class="archetype-icon">${archetype.icon}</div>
+        <div class="archetype-icon">${this.getArchetypeEmoji()}</div>
+        
         <h2>${archetype.name}</h2>
         <p class="archetype-tagline">"${archetype.tagline}"</p>
         
@@ -334,11 +368,24 @@ const app = {
     this.showPage('career-reveal');
   },
 
+  // GET ARCHETYPE EMOJI
+  getArchetypeEmoji() {
+    const emojis = {
+      'investigator': '🔍',
+      'builder': '🔧',
+      'protector': '🛡️',
+      'strategist': '♞',
+      'connector': '🎯',
+      'explorer': '🌍'
+    };
+    return emojis[this.state.matchedArchetype] || '🎯';
+  },
+
   // UTILITY FUNCTIONS
   shuffleAnswers(answers, correctIndex) {
     // Create array with original indices
     const indexed = answers.map((answer, idx) => ({
-      answer: answer,
+      answer: answer.text || answer,
       originalIndex: idx
     }));
 
