@@ -228,7 +228,101 @@
   background: rgba(22, 28, 45, 1);
 }
 
-/* CAREER REVEAL */
+/* ANSWER FEEDBACK */
+.quiz-answer-btn.correct-answer {
+  border-color: #00FF00 !important;
+  background: rgba(0, 255, 0, 0.15) !important;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.4) !important;
+}
+
+.quiz-answer-btn.correct-answer .answer-letter {
+  background: #00FF00 !important;
+  color: var(--color-background) !important;
+}
+
+.quiz-answer-btn.incorrect-answer {
+  border-color: #FF007A !important;
+  background: rgba(255, 0, 122, 0.15) !important;
+  box-shadow: 0 0 20px rgba(255, 0, 122, 0.4) !important;
+  opacity: 0.7;
+}
+
+.quiz-answer-btn.incorrect-answer .answer-letter {
+  background: #FF007A !important;
+  color: var(--color-background) !important;
+}
+
+.quiz-answer-btn:disabled {
+  cursor: not-allowed;
+}
+
+.answer-explanation {
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  background: rgba(22, 28, 45, 0.8);
+  border-left: 4px solid var(--color-primary);
+  border-radius: 6px;
+  animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.explanation-label {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-sm);
+  color: var(--color-text);
+}
+
+.correct-answer-text {
+  font-size: 0.95rem;
+  color: #00FF00;
+  margin-bottom: var(--spacing-sm);
+  font-weight: 600;
+}
+
+.explanation-text {
+  font-size: 0.95rem;
+  color: var(--color-muted);
+  line-height: 1.6;
+}
+
+/* QUIZ CONTROLS */
+#safety-next-btn,
+#ai-next-btn,
+#strength-next-btn {
+  display: none;
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  border: none;
+  border-radius: 8px;
+  color: var(--color-background);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  min-height: 50px;
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+}
+
+#safety-next-btn:hover,
+#ai-next-btn:hover,
+#strength-next-btn:hover {
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.6);
+  transform: scale(1.02);
+}
+
 .career-reveal-container {
   padding-bottom: var(--spacing-xl);
 }

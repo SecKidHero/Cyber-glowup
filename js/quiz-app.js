@@ -133,15 +133,44 @@ const app = {
     // Find correct answer in shuffled array
     const correctIndex = shuffledAnswers.findIndex(a => a === question.answers[question.correct]);
     
-    this.state.onlineSafetyAnswers[questionIndex] = selectedIndex === correctIndex;
+    const isCorrect = selectedIndex === correctIndex;
+    this.state.onlineSafetyAnswers[questionIndex] = isCorrect;
+    this.state.currentQuizType = 'onlineSafety';
+    this.state.currentQuestionIndex = questionIndex;
 
-    if (questionIndex < 4) {
-      // Next question
-      this.renderOnlineSafetyQuestion(questionIndex + 1);
-    } else {
-      // Move to AI Reality Check
-      this.startAIRealityQuiz();
+    // Disable all buttons
+    document.querySelectorAll('.quiz-answer-btn').forEach(btn => btn.disabled = true);
+    
+    // Highlight correct/incorrect
+    const buttons = document.querySelectorAll('.quiz-answer-btn');
+    buttons[correctIndex].classList.add('correct-answer');
+    if (!isCorrect) {
+      buttons[selectedIndex].classList.add('incorrect-answer');
     }
+    
+    // Show explanation
+    const explanationDiv = document.createElement('div');
+    explanationDiv.className = 'answer-explanation';
+    explanationDiv.innerHTML = `
+      <p class="explanation-label">${isCorrect ? '✅ Correct!' : '❌ Incorrect'}</p>
+      <p class="correct-answer-text">The correct answer is: <strong>${question.answers[question.correct]}</strong></p>
+      <p class="explanation-text">${question.explanation}</p>
+    `;
+    
+    const container = document.getElementById('safety-quiz-content');
+    const questionDiv = container.querySelector('.quiz-question');
+    questionDiv.appendChild(explanationDiv);
+    
+    // Add next button
+    const nextBtn = document.getElementById('safety-next-btn');
+    nextBtn.style.display = 'block';
+    nextBtn.onclick = () => {
+      if (questionIndex < 4) {
+        this.renderOnlineSafetyQuestion(questionIndex + 1);
+      } else {
+        this.startAIRealityQuiz();
+      }
+    };
   },
 
   // AI REALITY QUIZ
@@ -188,15 +217,44 @@ const app = {
     
     const correctIndex = shuffledAnswers.findIndex(a => a === question.answers[question.correct]);
     
-    this.state.aiRealityAnswers[questionIndex] = selectedIndex === correctIndex;
+    const isCorrect = selectedIndex === correctIndex;
+    this.state.aiRealityAnswers[questionIndex] = isCorrect;
+    this.state.currentQuizType = 'aiReality';
+    this.state.currentQuestionIndex = questionIndex;
 
-    if (questionIndex < 4) {
-      // Next question
-      this.renderAIRealityQuestion(questionIndex + 1);
-    } else {
-      // Move to Strength Quiz
-      this.startStrengthQuiz();
+    // Disable all buttons
+    document.querySelectorAll('.quiz-answer-btn').forEach(btn => btn.disabled = true);
+    
+    // Highlight correct/incorrect
+    const buttons = document.querySelectorAll('.quiz-answer-btn');
+    buttons[correctIndex].classList.add('correct-answer');
+    if (!isCorrect) {
+      buttons[selectedIndex].classList.add('incorrect-answer');
     }
+    
+    // Show explanation
+    const explanationDiv = document.createElement('div');
+    explanationDiv.className = 'answer-explanation';
+    explanationDiv.innerHTML = `
+      <p class="explanation-label">${isCorrect ? '✅ Correct!' : '❌ Incorrect'}</p>
+      <p class="correct-answer-text">The correct answer is: <strong>${question.answers[question.correct]}</strong></p>
+      <p class="explanation-text">${question.explanation}</p>
+    `;
+    
+    const container = document.getElementById('ai-quiz-content');
+    const questionDiv = container.querySelector('.quiz-question');
+    questionDiv.appendChild(explanationDiv);
+    
+    // Add next button
+    const nextBtn = document.getElementById('ai-next-btn');
+    nextBtn.style.display = 'block';
+    nextBtn.onclick = () => {
+      if (questionIndex < 4) {
+        this.renderAIRealityQuestion(questionIndex + 1);
+      } else {
+        this.startStrengthQuiz();
+      }
+    };
   },
 
   // STRENGTH/CAREER APTITUDE QUIZ
@@ -243,15 +301,40 @@ const app = {
     
     const selectedAnswer = shuffledAnswers[selectedIndex];
     this.state.strengthQuizAnswers.push(selectedAnswer.archetype);
+    this.state.currentQuizType = 'strength';
+    this.state.currentQuestionIndex = questionIndex;
 
-    if (questionIndex < 4) {
-      // Next question
-      this.renderStrengthQuestion(questionIndex + 1);
-    } else {
-      // Calculate archetype and show career reveal
-      this.calculateArchetype();
-      this.showCareerReveal();
-    }
+    // Disable all buttons
+    document.querySelectorAll('.quiz-answer-btn').forEach(btn => btn.disabled = true);
+    
+    // Highlight selected answer
+    const buttons = document.querySelectorAll('.quiz-answer-btn');
+    buttons[selectedIndex].classList.add('correct-answer');
+    
+    // Show confirmation message
+    const confirmDiv = document.createElement('div');
+    confirmDiv.className = 'answer-explanation';
+    confirmDiv.innerHTML = `
+      <p class="explanation-label">✓ Got it!</p>
+      <p class="explanation-text">You selected: <strong>${selectedAnswer.text}</strong></p>
+    `;
+    
+    const container = document.getElementById('strength-quiz-content');
+    const questionDiv = container.querySelector('.quiz-question');
+    questionDiv.appendChild(confirmDiv);
+    
+    // Add next button
+    const nextBtn = document.getElementById('strength-next-btn');
+    nextBtn.style.display = 'block';
+    nextBtn.textContent = questionIndex === 4 ? '🎯 Reveal Results →' : 'Next Question →';
+    nextBtn.onclick = () => {
+      if (questionIndex < 4) {
+        this.renderStrengthQuestion(questionIndex + 1);
+      } else {
+        this.calculateArchetype();
+        this.showCareerReveal();
+      }
+    };
   },
 
   // ARCHETYPE MATCHING
