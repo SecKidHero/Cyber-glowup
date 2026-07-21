@@ -1,5 +1,5 @@
 /* ========================================
-   CYBER GLOW-UP CHALLENGE v2.1
+   CYBER GLOW-UP CHALLENGE v2.2
    Quiz Application Logic
    ======================================== */
 
@@ -10,9 +10,17 @@ const app = {
     userName: '',
     gamingTag: '',
     teamName: '',
+
+    // Quiz answer records
     onlineSafetyAnswers: [],
     aiRealityAnswers: [],
     strengthQuizAnswers: [],
+
+    // Persisted answer ordering per question (prevents re-shuffle grading bugs)
+    onlineSafetyShuffledAnswers: [],
+    aiRealityShuffledAnswers: [],
+    strengthShuffledAnswers: [],
+
     matchedArchetype: null,
     pageHistory: [] // Track navigation for back button
   },
@@ -37,13 +45,13 @@ const app = {
     document.querySelectorAll('.page').forEach(page => {
       page.classList.remove('active');
     });
-    
+
     // Show requested page
     const page = document.getElementById(`page-${pageId}`);
     if (page) {
       page.classList.add('active');
       this.state.currentPage = pageId;
-      
+
       // Track in history for back button
       if (!this.state.pageHistory.includes(pageId)) {
         this.state.pageHistory.push(pageId);
@@ -64,9 +72,15 @@ const app = {
     this.state.userName = '';
     this.state.gamingTag = '';
     this.state.teamName = '';
+
     this.state.onlineSafetyAnswers = [];
     this.state.aiRealityAnswers = [];
     this.state.strengthQuizAnswers = [];
+
+    this.state.onlineSafetyShuffledAnswers = [];
+    this.state.aiRealityShuffledAnswers = [];
+    this.state.strengthShuffledAnswers = [];
+
     this.state.matchedArchetype = null;
     this.showPage('registration');
   },
@@ -82,7 +96,7 @@ const app = {
       this.state.userName = name;
       this.state.gamingTag = gamingTag || name;
       this.state.teamName = teamName;
-      
+
       // Start first quiz
       this.startOnlineSafetyQuiz();
     }
@@ -91,6 +105,7 @@ const app = {
   // ONLINE SAFETY QUIZ
   startOnlineSafetyQuiz() {
     this.state.onlineSafetyAnswers = [];
+    this.state.onlineSafetyShuffledAnswers = [];
     this.renderOnlineSafetyQuestion(0);
     this.showPage('online-safety-quiz');
   },
@@ -98,14 +113,15 @@ const app = {
   renderOnlineSafetyQuestion(questionIndex) {
     const question = QuizData.onlineSafety[questionIndex];
     const container = document.getElementById('safety-quiz-content');
-    
+
     // Update progress
     document.getElementById('safety-progress').textContent = `Question ${questionIndex + 1} of 5`;
     const progress = ((questionIndex + 1) / 5) * 100;
     document.getElementById('safety-progress-fill').style.width = progress + '%';
 
-    // Randomize answers
-    const shuffledAnswers = this.shuffleAnswers(question.answers, question.correct);
+    // Randomize answers ONCE and persist order for this question
+    const shuffledAnswers = this.shuffleAnswers(question.answers);
+    this.state.onlineSafetyShuffledAnswers[questionIndex] = shuffledAnswers;
 
     let html = `
       <div class="quiz-question">
@@ -124,43 +140,61 @@ const app = {
 
     html += `</div></div>`;
     container.innerHTML = html;
+
+    const nextBtn = document.getElementById('safety-next-btn');
+    if (nextBtn) {
+      nextBtn.style.display = 'none';
+    }
   },
 
   answerOnlineSafetyQuestion(questionIndex, selectedIndex) {
     const question = QuizData.onlineSafety[questionIndex];
-    const shuffledAnswers = this.shuffleAnswers(question.answers, question.correct);
-    
-    // Find correct answer in shuffled array
-    const correctIndex = shuffledAnswers.findIndex(a => a === question.answers[question.correct]);
-    
+    const shuffledAnswers = this.state.onlineSafetyShuffledAnswers[questionIndex] || this.shuffleAnswers(question.answers);
+    const correctAnswerText = question.answers[question.correct];
+
+    // Find correct answer in THE SAME shuffled array used for rendering
+    const correctIndex = shuffledAnswers.findIndex(a => a === correctAnswerText);
+    const selectedAnswerText = shuffledAnswers[selectedIndex];
     const isCorrect = selectedIndex === correctIndex;
-    this.state.onlineSafetyAnswers[questionIndex] = isCorrect;
+
+    // Persist rich answer record
+    this.state.onlineSafetyAnswers[questionIndex] = {
+      question: question.question,
+      selectedIndex,
+      selectedAnswer: selectedAnswerText,
+      correctIndex,
+      correctAnswer: correctAnswerText,
+      isCorrect,
+      explanation: question.explanation
+    };
+
     this.state.currentQuizType = 'onlineSafety';
     this.state.currentQuestionIndex = questionIndex;
 
-    // Disable all buttons
-    document.querySelectorAll('.quiz-answer-btn').forEach(btn => btn.disabled = true);
-    
+    // Disable all buttons in this question block
+    const questionDiv = document.getElementById('safety-quiz-content').querySelector('.quiz-question');
+    const buttons = questionDiv.querySelectorAll('.quiz-answer-btn');
+    buttons.forEach(btn => (btn.disabled = true));
+
     // Highlight correct/incorrect
-    const buttons = document.querySelectorAll('.quiz-answer-btn');
-    buttons[correctIndex].classList.add('correct-answer');
-    if (!isCorrect) {
+    if (buttons[correctIndex]) {
+      buttons[correctIndex].classList.add('correct-answer');
+    }
+    if (!isCorrect && buttons[selectedIndex]) {
       buttons[selectedIndex].classList.add('incorrect-answer');
     }
-    
+
     // Show explanation
     const explanationDiv = document.createElement('div');
     explanationDiv.className = 'answer-explanation';
     explanationDiv.innerHTML = `
       <p class="explanation-label">${isCorrect ? '✅ Correct!' : '❌ Incorrect'}</p>
-      <p class="correct-answer-text">The correct answer is: <strong>${question.answers[question.correct]}</strong></p>
+      <p class="correct-answer-text">The correct answer is: <strong>${correctAnswerText}</strong></p>
       <p class="explanation-text">${question.explanation}</p>
     `;
-    
-    const container = document.getElementById('safety-quiz-content');
-    const questionDiv = container.querySelector('.quiz-question');
+
     questionDiv.appendChild(explanationDiv);
-    
+
     // Add next button
     const nextBtn = document.getElementById('safety-next-btn');
     nextBtn.style.display = 'block';
@@ -176,6 +210,7 @@ const app = {
   // AI REALITY QUIZ
   startAIRealityQuiz() {
     this.state.aiRealityAnswers = [];
+    this.state.aiRealityShuffledAnswers = [];
     this.renderAIRealityQuestion(0);
     this.showPage('ai-reality-quiz');
   },
@@ -183,14 +218,15 @@ const app = {
   renderAIRealityQuestion(questionIndex) {
     const question = QuizData.aiReality[questionIndex];
     const container = document.getElementById('ai-quiz-content');
-    
+
     // Update progress
     document.getElementById('ai-progress').textContent = `Question ${questionIndex + 1} of 5`;
     const progress = ((questionIndex + 1) / 5) * 100;
     document.getElementById('ai-progress-fill').style.width = progress + '%';
 
-    // Randomize answers
-    const shuffledAnswers = this.shuffleAnswers(question.answers, question.correct);
+    // Randomize answers ONCE and persist order for this question
+    const shuffledAnswers = this.shuffleAnswers(question.answers);
+    this.state.aiRealityShuffledAnswers[questionIndex] = shuffledAnswers;
 
     let html = `
       <div class="quiz-question">
@@ -209,84 +245,76 @@ const app = {
 
     html += `</div></div>`;
     container.innerHTML = html;
+
+    const nextBtn = document.getElementById('ai-next-btn');
+    if (nextBtn) {
+      nextBtn.style.display = 'none';
+    }
   },
 
   answerAIRealityQuestion(questionIndex, selectedIndex) {
     const question = QuizData.aiReality[questionIndex];
-    const shuffledAnswers = this.shuffleAnswers(question.answers, question.correct);
-    
-    console.log('🔍 DEBUG AI Reality Question:', {
-      questionIndex,
-      selectedIndex,
-      question: question.question,
-      correct: question.correct,
-      shuffledAnswers,
-      correctIndex: shuffledAnswers.findIndex(a => a === question.answers[question.correct])
-    });
-    
-    const correctIndex = shuffledAnswers.findIndex(a => a === question.answers[question.correct]);
-    
+    const shuffledAnswers = this.state.aiRealityShuffledAnswers[questionIndex] || this.shuffleAnswers(question.answers);
+    const correctAnswerText = question.answers[question.correct];
+
+    const correctIndex = shuffledAnswers.findIndex(a => a === correctAnswerText);
+    const selectedAnswerText = shuffledAnswers[selectedIndex];
     const isCorrect = selectedIndex === correctIndex;
-    console.log('📊 AI Reality Result:', { isCorrect, correctIndex, selectedIndex });
-    
-    this.state.aiRealityAnswers[questionIndex] = isCorrect;
+
+    // Persist rich answer record
+    this.state.aiRealityAnswers[questionIndex] = {
+      question: question.question,
+      selectedIndex,
+      selectedAnswer: selectedAnswerText,
+      correctIndex,
+      correctAnswer: correctAnswerText,
+      isCorrect,
+      explanation: question.explanation
+    };
+
     this.state.currentQuizType = 'aiReality';
     this.state.currentQuestionIndex = questionIndex;
 
-    // Disable all buttons
-    const buttons = document.querySelectorAll('.quiz-answer-btn');
-    console.log('🔘 Found buttons:', buttons.length);
-    buttons.forEach(btn => btn.disabled = true);
-    
+    // Disable all buttons in this question block
+    const questionDiv = document.getElementById('ai-quiz-content').querySelector('.quiz-question');
+    const buttons = questionDiv.querySelectorAll('.quiz-answer-btn');
+    buttons.forEach(btn => (btn.disabled = true));
+
     // Highlight correct/incorrect
-    buttons[correctIndex].classList.add('correct-answer');
-    console.log('✅ Added correct-answer class to button', correctIndex);
-    
-    if (!isCorrect) {
-      buttons[selectedIndex].classList.add('incorrect-answer');
-      console.log('❌ Added incorrect-answer class to button', selectedIndex);
+    if (buttons[correctIndex]) {
+      buttons[correctIndex].classList.add('correct-answer');
     }
-    
+    if (!isCorrect && buttons[selectedIndex]) {
+      buttons[selectedIndex].classList.add('incorrect-answer');
+    }
+
     // Show explanation
     const explanationDiv = document.createElement('div');
     explanationDiv.className = 'answer-explanation';
     explanationDiv.innerHTML = `
       <p class="explanation-label">${isCorrect ? '✅ Correct!' : '❌ Incorrect'}</p>
-      <p class="correct-answer-text">The correct answer is: <strong>${question.answers[question.correct]}</strong></p>
+      <p class="correct-answer-text">The correct answer is: <strong>${correctAnswerText}</strong></p>
       <p class="explanation-text">${question.explanation}</p>
     `;
-    
-    const container = document.getElementById('ai-quiz-content');
-    console.log('📦 Container found:', container ? 'YES' : 'NO');
-    
-    const questionDiv = container.querySelector('.quiz-question');
-    console.log('❓ Question div found:', questionDiv ? 'YES' : 'NO');
-    
-    if (questionDiv) {
-      questionDiv.appendChild(explanationDiv);
-      console.log('📝 Explanation div appended');
-    }
-    
+
+    questionDiv.appendChild(explanationDiv);
+
     // Add next button
     const nextBtn = document.getElementById('ai-next-btn');
-    console.log('🔘 Next button found:', nextBtn ? 'YES' : 'NO');
-    
-    if (nextBtn) {
-      nextBtn.style.display = 'block';
-      nextBtn.onclick = () => {
-        if (questionIndex < 4) {
-          this.renderAIRealityQuestion(questionIndex + 1);
-        } else {
-          this.startStrengthQuiz();
-        }
-      };
-      console.log('✨ Next button configured');
-    }
+    nextBtn.style.display = 'block';
+    nextBtn.onclick = () => {
+      if (questionIndex < 4) {
+        this.renderAIRealityQuestion(questionIndex + 1);
+      } else {
+        this.startStrengthQuiz();
+      }
+    };
   },
 
   // STRENGTH/CAREER APTITUDE QUIZ
   startStrengthQuiz() {
     this.state.strengthQuizAnswers = [];
+    this.state.strengthShuffledAnswers = [];
     this.renderStrengthQuestion(0);
     this.showPage('strength-quiz');
   },
@@ -294,14 +322,15 @@ const app = {
   renderStrengthQuestion(questionIndex) {
     const question = QuizData.strengthQuiz[questionIndex];
     const container = document.getElementById('strength-quiz-content');
-    
+
     // Update progress
     document.getElementById('strength-progress').textContent = `Question ${questionIndex + 1} of 5`;
     const progress = ((questionIndex + 1) / 5) * 100;
     document.getElementById('strength-progress-fill').style.width = progress + '%';
 
-    // Shuffle answers
+    // Shuffle ONCE and persist
     const shuffledAnswers = [...question.answers].sort(() => Math.random() - 0.5);
+    this.state.strengthShuffledAnswers[questionIndex] = shuffledAnswers;
 
     let html = `
       <div class="quiz-question">
@@ -320,36 +349,50 @@ const app = {
 
     html += `</div></div>`;
     container.innerHTML = html;
+
+    const nextBtn = document.getElementById('strength-next-btn');
+    if (nextBtn) {
+      nextBtn.style.display = 'none';
+      nextBtn.textContent = questionIndex === 4 ? '🎯 Reveal Results →' : 'Next Question →';
+    }
   },
 
   answerStrengthQuestion(questionIndex, selectedIndex) {
     const question = QuizData.strengthQuiz[questionIndex];
-    const shuffledAnswers = [...question.answers].sort(() => Math.random() - 0.5);
-    
+    const shuffledAnswers = this.state.strengthShuffledAnswers[questionIndex] || [...question.answers];
+
     const selectedAnswer = shuffledAnswers[selectedIndex];
-    this.state.strengthQuizAnswers.push(selectedAnswer.archetype);
+
+    this.state.strengthQuizAnswers[questionIndex] = {
+      question: question.question,
+      selectedIndex,
+      selectedAnswer: selectedAnswer ? selectedAnswer.text : '',
+      archetype: selectedAnswer ? selectedAnswer.archetype : 'none'
+    };
+
     this.state.currentQuizType = 'strength';
     this.state.currentQuestionIndex = questionIndex;
 
-    // Disable all buttons
-    document.querySelectorAll('.quiz-answer-btn').forEach(btn => btn.disabled = true);
-    
+    // Disable all buttons in this question block
+    const questionDiv = document.getElementById('strength-quiz-content').querySelector('.quiz-question');
+    const buttons = questionDiv.querySelectorAll('.quiz-answer-btn');
+    buttons.forEach(btn => (btn.disabled = true));
+
     // Highlight selected answer
-    const buttons = document.querySelectorAll('.quiz-answer-btn');
-    buttons[selectedIndex].classList.add('correct-answer');
-    
+    if (buttons[selectedIndex]) {
+      buttons[selectedIndex].classList.add('correct-answer');
+    }
+
     // Show confirmation message
     const confirmDiv = document.createElement('div');
     confirmDiv.className = 'answer-explanation';
     confirmDiv.innerHTML = `
-      <p class="explanation-label">✓ Got it!</p>
-      <p class="explanation-text">You selected: <strong>${selectedAnswer.text}</strong></p>
+      <p class="explanation-label">✓ Saved!</p>
+      <p class="explanation-text">You selected: <strong>${selectedAnswer ? selectedAnswer.text : 'No answer selected'}</strong></p>
     `;
-    
-    const container = document.getElementById('strength-quiz-content');
-    const questionDiv = container.querySelector('.quiz-question');
+
     questionDiv.appendChild(confirmDiv);
-    
+
     // Add next button
     const nextBtn = document.getElementById('strength-next-btn');
     nextBtn.style.display = 'block';
@@ -376,7 +419,9 @@ const app = {
       none: 0
     };
 
-    this.state.strengthQuizAnswers.forEach(archetype => {
+    this.state.strengthQuizAnswers.forEach(answerRecord => {
+      if (!answerRecord) return;
+      const archetype = answerRecord.archetype;
       if (archetypeCounts.hasOwnProperty(archetype)) {
         archetypeCounts[archetype]++;
       }
@@ -396,41 +441,57 @@ const app = {
     this.state.matchedArchetype = bestMatch;
   },
 
-  // CAREER REVEAL
+  getQuizScore(answersArray) {
+    return answersArray.reduce((score, record) => {
+      if (record && record.isCorrect) return score + 1;
+      return score;
+    }, 0);
+  },
+
+  // CAREER + QUIZ REVEAL
   showCareerReveal() {
     const archetype = QuizData.archetypeProfiles[this.state.matchedArchetype];
     const container = document.getElementById('career-reveal-content');
 
     document.getElementById('reveal-name').textContent = this.state.userName;
 
+    const safetyScore = this.getQuizScore(this.state.onlineSafetyAnswers);
+    const aiScore = this.getQuizScore(this.state.aiRealityAnswers);
+
     let html = `
       <div class="archetype-reveal">
         <div class="archetype-icon">${archetype.icon}</div>
         <h2>${archetype.name}</h2>
         <p class="archetype-tagline">"${archetype.tagline}"</p>
-        
+
         <p class="archetype-description">${archetype.description}</p>
-        
+
         <div class="archetype-roles">
           <h3>Roles You Might Love:</h3>
           <ul>
             ${archetype.roles.map(role => `<li>${role}</li>`).join('')}
           </ul>
         </div>
-        
+
         <div class="archetype-skills">
           <h3>Key Skills:</h3>
           <div class="skills-list">
             ${archetype.skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
           </div>
         </div>
-        
+
+        <div class="quiz-results-summary">
+          <h3>Your Quiz Results</h3>
+          <p><strong>Online Safety Quiz:</strong> ${safetyScore}/5 correct</p>
+          <p><strong>AI Reality Check:</strong> ${aiScore}/5 correct</p>
+        </div>
+
         <div class="archetype-user-info">
           <p><strong>Player:</strong> ${this.state.userName}</p>
           <p><strong>Team:</strong> ${this.state.teamName}</p>
           <p><strong>Gaming Tag:</strong> ${this.state.gamingTag}</p>
         </div>
-        
+
         <div class="niccs-explore">
           <p>If you want to explore these careers further, please click here:</p>
           <a href="https://niccs.cisa.gov/tools/cyber-career-pathways-tool" target="_blank" class="niccs-link">
@@ -445,18 +506,10 @@ const app = {
   },
 
   // UTILITY FUNCTIONS
-  shuffleAnswers(answers, correctIndex) {
-    // Create array with original indices
-    const indexed = answers.map((answer, idx) => ({
-      answer: answer,
-      originalIndex: idx
-    }));
-
-    // Shuffle
-    const shuffled = indexed.sort(() => Math.random() - 0.5);
-
-    // Return just the answers in shuffled order
-    return shuffled.map(item => item.answer);
+  shuffleAnswers(answers) {
+    // Create copy and shuffle
+    const shuffled = [...answers].sort(() => Math.random() - 0.5);
+    return shuffled;
   },
 
   takeScreenshot() {
