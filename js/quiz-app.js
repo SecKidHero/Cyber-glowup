@@ -258,6 +258,12 @@ const app = {
       btn.disabled = true;
     });
 
+    // Remove any existing feedback div
+    const existingFeedback = document.querySelector('.answer-feedback');
+    if (existingFeedback) {
+      existingFeedback.remove();
+    }
+
     // Show feedback message
     const feedbackDiv = document.createElement('div');
     feedbackDiv.className = 'answer-feedback';
@@ -275,15 +281,18 @@ const app = {
       </div>
     `;
 
-    // Insert feedback after questions
-    const quizAnswers = document.querySelector('.quiz-answers');
-    quizAnswers.parentNode.insertBefore(feedbackDiv, quizAnswers.nextSibling);
+    // Insert feedback after quiz question section
+    const quizQuestion = document.querySelector('.quiz-question');
+    if (quizQuestion) {
+      quizQuestion.appendChild(feedbackDiv);
+    }
 
     // Show next button
     const quiz = this.state.currentQuiz;
     let nextBtnId;
     if (quiz === 'online-safety') nextBtnId = 'safety-next-btn';
     else if (quiz === 'ai-reality') nextBtnId = 'ai-next-btn';
+    else if (quiz === 'strength') nextBtnId = 'strength-next-btn';
 
     const nextBtn = document.getElementById(nextBtnId);
     if (nextBtn) {

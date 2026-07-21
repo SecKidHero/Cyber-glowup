@@ -247,6 +247,14 @@
 /* ANSWER FEEDBACK */
 .answer-feedback {
   animation: slideIn 0.3s ease-out;
+  width: 100%;
+  position: relative;
+  z-index: 10;
+}
+
+.answer-feedback > div {
+  position: relative;
+  z-index: 10;
 }
 
 @keyframes slideIn {
