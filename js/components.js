@@ -26,8 +26,15 @@ const Components = {
     const cards = document.querySelectorAll('.archetype-card');
     cards.forEach(card => {
       card.addEventListener('click', function() {
-        cards.forEach(c => c.style.transform = '');
-        this.style.transform = 'translateY(-20px) scale(1.08)';
+        cards.forEach(c => c.classList.remove('is-selected'));
+        this.classList.add('is-selected');
+      });
+
+      card.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          this.click();
+        }
       });
       
       card.addEventListener('mouseenter', function() {
@@ -35,7 +42,7 @@ const Components = {
       });
       
       card.addEventListener('mouseleave', function() {
-        this.style.zIndex = 'auto';
+        this.style.removeProperty('z-index');
       });
     });
   },
@@ -70,9 +77,9 @@ const Components = {
     }
     
     // Update XP display in navbar
-    const xpDisplay = document.querySelector('.xp-display');
-    if (xpDisplay) {
-      xpDisplay.textContent = `⚡ ${AppState.user.xp}`;
+    const xpCount = document.getElementById('xp-count');
+    if (xpCount) {
+      xpCount.textContent = AppState.user.xp;
     }
   },
   
