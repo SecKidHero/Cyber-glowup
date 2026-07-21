@@ -137,6 +137,7 @@ const app = {
   renderCurrentQuestion() {
     const quiz = this.state.currentQuiz;
     const questionIndex = this.state.currentQuestionIndex;
+    const isLastQuestion = questionIndex === 4;
 
     let questionData, containerId, progressId, progressFillId, nextBtnId;
 
@@ -188,9 +189,14 @@ const app = {
     html += `</div></div>`;
     container.innerHTML = html;
 
-    // Hide next button initially
+    // Update next button text and hide initially
     const nextBtn = document.getElementById(nextBtnId);
     if (nextBtn) {
+      if (isLastQuestion) {
+        nextBtn.textContent = quiz === 'strength' ? '🎯 Reveal Results →' : 'Finish Quiz →';
+      } else {
+        nextBtn.textContent = 'Next Question →';
+      }
       nextBtn.style.display = 'none';
     }
   },
@@ -328,6 +334,12 @@ const app = {
 
     const quiz = this.state.currentQuiz;
     const questionIndex = this.state.currentQuestionIndex;
+
+    // Record answer for strength quiz BEFORE moving to next question
+    if (quiz === 'strength') {
+      const questionData = QuizData.strengthQuiz[questionIndex];
+      this.state.strengthQuizAnswers[questionIndex] = questionData.answers[this.state.selectedAnswer].archetype;
+    }
 
     this.state.currentQuestionIndex++;
     this.state.selectedAnswer = null;
