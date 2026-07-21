@@ -4,8 +4,8 @@
 [build]
   # No build command needed (static files)
   command = ""
-  # Publish directory - root of the project
-  publish = "/"
+  # Publish directory - current directory (where netlify.toml is)
+  publish = "."
 
 [build.environment]
   # Node version (optional, not used for static site)
@@ -51,9 +51,9 @@
 # Branch deploys
 [context.branch-deploy]
   command = ""
-  publish = "/"
+  publish = "."
 
 # Deploy preview
 [context.deploy-preview]
   command = ""
-  publish = "/"
+  publish = "."
