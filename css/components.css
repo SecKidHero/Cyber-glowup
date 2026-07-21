@@ -632,6 +632,92 @@
   gap: var(--spacing-2xl);
 }
 
+/* BOTTOM STATS BAR: Make last 3 widgets horizontal and compact */
+.dashboard-grid {
+  --widgets-count: 3;
+}
+
+/* Position the XP widget to span full width */
+.dashboard-widget[style*="grid-column: 1 / -1"] {
+  grid-column: 1 / -1;
+}
+
+/* Make the last 3 widgets (Streak, Power Points, Glow Squad) display horizontally */
+.dashboard-widget:nth-child(3),
+.dashboard-widget:nth-child(4),
+.dashboard-widget:nth-child(5) {
+  /* This will be overridden by media queries and layout rules */
+}
+
+/* Bottom stats container - flex row for last 3 widgets */
+.user-dashboard {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Add a bottom stats bar section */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--spacing-lg);
+  grid-template-areas:
+    "level level level"
+    "xp xp xp"
+    "streak power squad";
+}
+
+.dashboard-widget:nth-child(1) {
+  grid-area: level;
+}
+
+.dashboard-widget:nth-child(2) {
+  grid-area: xp;
+}
+
+.dashboard-widget:nth-child(3) {
+  grid-area: streak;
+  padding: var(--spacing-md);
+  font-size: 0.85rem;
+}
+
+.dashboard-widget:nth-child(4) {
+  grid-area: power;
+  padding: var(--spacing-md);
+  font-size: 0.85rem;
+}
+
+.dashboard-widget:nth-child(5) {
+  grid-area: squad;
+  padding: var(--spacing-md);
+  font-size: 0.85rem;
+}
+
+/* Reduce widget size for bottom stats */
+.dashboard-widget:nth-child(3) .widget-value-main,
+.dashboard-widget:nth-child(4) .widget-value-main,
+.dashboard-widget:nth-child(5) .widget-value-main {
+  font-size: 1.5rem;
+}
+
+.dashboard-widget:nth-child(3) .widget-label,
+.dashboard-widget:nth-child(4) .widget-label,
+.dashboard-widget:nth-child(5) .widget-label {
+  font-size: 0.75rem;
+}
+
+.dashboard-widget:nth-child(3) .streak-icon,
+.dashboard-widget:nth-child(4) svg,
+.dashboard-widget:nth-child(5) svg {
+  width: 14px;
+  height: 14px;
+}
+
+.squad-count {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
 .dashboard-widget {
   display: flex;
   flex-direction: column;
@@ -788,6 +874,11 @@
   
   .dashboard-grid {
     grid-template-columns: repeat(2, 1fr);
+    grid-template-areas:
+      "level level"
+      "xp xp"
+      "streak power"
+      "streak squad";
   }
 }
 
@@ -842,8 +933,12 @@
   }
   
   .dashboard-grid {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-lg);
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas:
+      "level level level"
+      "xp xp xp"
+      "streak power squad";
+    gap: var(--spacing-md);
   }
   
   .widget-value-main {
