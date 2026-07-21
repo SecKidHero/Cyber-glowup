@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cyber Glow-Up Challenge - Interactive Quizzes">
+  <meta name="theme-color" content="#0B0F19">
+  <title>Cyber Glow-Up Challenge - Start Your Mission</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/quizzes.css">
+</head>
+
+<body class="quiz-app">
+  <div id="app">
+    <!-- REGISTRATION PAGE -->
+    <section id="page-registration" class="page active">
+      <div class="page-wrapper">
+        <button class="back-btn" onclick="app.goHome()" aria-label="Go back to home">
+          <span>← Back</span>
+        </button>
+        
+        <div class="quiz-container">
+          <div class="quiz-header">
+            <h1>Welcome to the Challenge</h1>
+            <p class="quiz-subtitle">Let us know a bit about you first</p>
+          </div>
+          
+          <form class="registration-form" id="registration-form">
+            <div class="form-group">
+              <label for="name">Your Name</label>
+              <input 
+                type="text" 
+                id="name" 
+                name="name" 
+                placeholder="Sarah" 
+                required
+                aria-required="true"
+              >
+            </div>
+            
+            <div class="form-group">
+              <label for="gaming-tag">Gaming Tag (optional)</label>
+              <input 
+                type="text" 
+                id="gaming-tag" 
+                name="gamingTag" 
+                placeholder="SilverHawk"
+                aria-label="Your gaming tag or username"
+              >
+            </div>
+            
+            <div class="form-group">
+              <label for="team-name">Team Name</label>
+              <input 
+                type="text" 
+                id="team-name" 
+                name="teamName" 
+                placeholder="The Code Breakers" 
+                required
+                aria-required="true"
+              >
+            </div>
+            
+            <button type="submit" class="cta-button">
+              Start the Challenge →
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ONLINE SAFETY QUIZ PAGE -->
+    <section id="page-online-safety-quiz" class="page">
+      <div class="page-wrapper">
+        <button class="back-btn" onclick="app.goBack()" aria-label="Go back to previous question">
+          <span>← Back</span>
+        </button>
+        
+        <div class="quiz-container">
+          <div class="quiz-header">
+            <h1>Online Safety Quiz</h1>
+            <div class="quiz-progress">
+              <span id="safety-progress">Question 1 of 5</span>
+              <div class="progress-bar">
+                <div class="progress-fill" id="safety-progress-fill"></div>
+              </div>
+            </div>
+          </div>
+          
+          <div id="safety-quiz-content"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI REALITY CHECK QUIZ PAGE -->
+    <section id="page-ai-reality-quiz" class="page">
+      <div class="page-wrapper">
+        <button class="back-btn" onclick="app.goBack()" aria-label="Go back to previous question">
+          <span>← Back</span>
+        </button>
+        
+        <div class="quiz-container">
+          <div class="quiz-header">
+            <h1>AI Reality Check</h1>
+            <div class="quiz-progress">
+              <span id="ai-progress">Question 1 of 5</span>
+              <div class="progress-bar">
+                <div class="progress-fill" id="ai-progress-fill"></div>
+              </div>
+            </div>
+          </div>
+          
+          <div id="ai-quiz-content"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STRENGTH/CAREER APTITUDE QUIZ PAGE -->
+    <section id="page-strength-quiz" class="page">
+      <div class="page-wrapper">
+        <button class="back-btn" onclick="app.goBack()" aria-label="Go back to previous question">
+          <span>← Back</span>
+        </button>
+        
+        <div class="quiz-container">
+          <div class="quiz-header">
+            <h1>Career Strength Quiz</h1>
+            <div class="quiz-progress">
+              <span id="strength-progress">Question 1 of 5</span>
+              <div class="progress-bar">
+                <div class="progress-fill" id="strength-progress-fill"></div>
+              </div>
+            </div>
+          </div>
+          
+          <div id="strength-quiz-content"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CAREER REVEAL PAGE -->
+    <section id="page-career-reveal" class="page">
+      <div class="page-wrapper">
+        <button class="back-btn" onclick="app.goBack()" aria-label="Go back to quiz">
+          <span>← Back</span>
+        </button>
+        
+        <div class="quiz-container career-reveal-container">
+          <div class="quiz-header">
+            <h1>Your Cyber Profile</h1>
+            <p class="quiz-subtitle">Revealed for <strong id="reveal-name"></strong></p>
+          </div>
+          
+          <div id="career-reveal-content"></div>
+          
+          <div class="career-actions">
+            <button class="cta-button" onclick="app.goHome()">
+              Back to Home
+            </button>
+            <button class="cta-button secondary" onclick="app.takeScreenshot()">
+              📸 Take Screenshot
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="js/state.js"></script>
+  <script src="js/quiz-data.js"></script>
+  <script src="js/quiz-app.js"></script>
+</body>
+</html>

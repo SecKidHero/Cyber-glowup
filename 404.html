@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="404 Error - Nobody's Perfect, But We're Working On It!">
+  <meta name="theme-color" content="#0B0F19">
+  <title>404 - Cyber Glow-Up Challenge</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="css/styles.css">
+  
+  <style>
+    /* 404-specific animations */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    @keyframes glitch {
+      0% { text-shadow: -2px 0 var(--color-secondary); }
+      20% { text-shadow: 2px 0 var(--color-primary); }
+      40% { text-shadow: -2px 0 var(--color-secondary); }
+      60% { text-shadow: 2px 0 var(--color-primary); }
+      80% { text-shadow: -2px 0 var(--color-secondary); }
+      100% { text-shadow: 2px 0 var(--color-primary); }
+    }
+    
+    @keyframes rotate-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    .error-code {
+      font-size: 12rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: float 3s ease-in-out infinite;
+      letter-spacing: -0.05em;
+      line-height: 1;
+    }
+    
+    .error-title {
+      animation: glitch 0.3s infinite;
+    }
+    
+    .floating-icon {
+      animation: float 4s ease-in-out infinite;
+    }
+    
+    .rotating-circle {
+      animation: rotate-slow 10s linear infinite;
+    }
+    
+    .error-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(255, 0, 122, 0.05));
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .error-content {
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+    
+    .error-box {
+      background: var(--color-surface-light);
+      border: 2px solid var(--color-primary);
+      border-radius: var(--radius-lg);
+      padding: 3rem;
+      backdrop-filter: blur(10px);
+      max-width: 600px;
+      margin: 0 auto;
+      box-shadow: 0 0 40px rgba(0, 240, 255, 0.2);
+    }
+    
+    .error-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 2rem;
+      opacity: 0.8;
+      filter: drop-shadow(var(--glow-secondary-strong));
+    }
+    
+    .error-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, var(--color-secondary), #c700a8);
+      border: none;
+      border-radius: var(--radius-lg);
+      color: var(--color-text);
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all var(--transition-base);
+      filter: drop-shadow(var(--glow-secondary));
+      margin-top: 1.5rem;
+    }
+    
+    .error-button:hover {
+      transform: scale(1.05);
+      filter: drop-shadow(var(--glow-secondary-strong));
+    }
+    
+    .error-button:active {
+      transform: scale(0.98);
+    }
+    
+    .decorative-circle {
+      position: absolute;
+      border: 2px solid var(--color-primary);
+      border-radius: 50%;
+      opacity: 0.1;
+    }
+    
+    .circle-1 {
+      width: 300px;
+      height: 300px;
+      top: -100px;
+      right: -100px;
+      animation: rotate-slow 20s linear infinite reverse;
+    }
+    
+    .circle-2 {
+      width: 200px;
+      height: 200px;
+      bottom: -50px;
+      left: -50px;
+      animation: rotate-slow 15s linear infinite;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="error-container">
+    <!-- Decorative circles -->
+    <div class="decorative-circle circle-1"></div>
+    <div class="decorative-circle circle-2"></div>
+    
+    <!-- Error Content -->
+    <div class="error-content">
+      <div class="error-box">
+        <!-- Error Icon -->
+        <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" stroke="url(#gradientStroke)" stroke-width="2"/>
+          <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2"/>
+          <line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" stroke-width="2"/>
+          <defs>
+            <linearGradient id="gradientStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#FF007A;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#00F0FF;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+        </svg>
+        
+        <!-- Error Code -->
+        <h1 class="error-code">404</h1>
+        
+        <!-- Error Title -->
+        <h2 class="text-3xl font-bold text-white mb-4 error-title">
+          Mission Not Found
+        </h2>
+        
+        <!-- Error Message -->
+        <p class="text-lg text-text-muted mb-2">
+          Nobody's perfect, but we're working on it! 🚀
+        </p>
+        
+        <p class="text-base text-text-dim mb-6">
+          This mission has crashed into the void. The cyber force you're looking for doesn't exist—yet. But fear not, brave hacker! Return to the command center and try a different path.
+        </p>
+        
+        <!-- Error Details -->
+        <div class="bg-black bg-opacity-30 border border-primary border-opacity-20 rounded-md p-4 mb-6 text-left">
+          <p class="font-mono text-sm text-primary mb-1">
+            <span class="text-secondary">[ERROR_404]</span> Resource not located
+          </p>
+          <p class="font-mono text-sm text-text-muted">
+            status: 404 | message: "Page not found in the cyber dimension"
+          </p>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="flex flex-col gap-3">
+          <a href="/" class="error-button" title="Return to Mission Control">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+              <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+            </svg>
+            <span>Return to Mission Control</span>
+          </a>
+        </div>
+        
+        <!-- Fun Tip -->
+        <div class="mt-6 pt-6 border-t border-primary border-opacity-20">
+          <p class="text-sm text-text-muted font-semibold mb-2">💡 Pro Tip:</p>
+          <p class="text-sm text-text-dim">
+            Errors are just the universe telling you to try a different path. Every bug is a lesson waiting to be learned!
+          </p>
+        </div>
+      </div>
+      
+      <!-- Floating Characters -->
+      <div class="mt-8 text-6xl opacity-30">
+        <span class="floating-icon" style="animation-delay: 0s;">🔍</span>
+        <span class="floating-icon" style="animation-delay: 0.5s; margin: 0 1rem;">💻</span>
+        <span class="floating-icon" style="animation-delay: 1s;">🛡️</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

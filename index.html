@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cyber Glow-Up Challenge - Know Your Strength. Protect Your Future. Discover your cyber skills and launch your career in tech.">
+  <meta name="theme-color" content="#0B0F19">
+  <title>Cyber Glow-Up Challenge - Know Your Strength. Protect Your Future.</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/components.css">
+  
+  <!-- Preconnect to external resources -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+
+<body>
+  <!-- NAVIGATION BAR -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <!-- Logo -->
+      <a href="#" class="navbar-logo">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M16 2L19.5 11H29L22 16L24.5 25L16 20L7.5 25L10 16L3 11H12.5L16 2Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+        </svg>
+        <span class="navbar-brand">
+          Cyber Glow-Up<br>
+          <span class="brand-accent">Challenge</span>
+        </span>
+      </a>
+      
+      <!-- Navigation Menu -->
+      <ul class="navbar-nav" id="navbar-menu">
+        <li><a href="#" class="nav-link" data-tab="mission-control">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="12" cy="12" r="1"/><path d="M12 2v6m0 4v6"/><path d="M2 12h6m4 0h6"/><circle cx="12" cy="12" r="10" fill="none"/>
+          </svg>
+          <span class="text">Mission Control</span>
+        </a></li>
+        
+        <li><a href="#" class="nav-link" data-tab="challenges">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+          <span class="text">Challenges</span>
+        </a></li>
+        
+        <li><a href="#" class="nav-link" data-tab="leaderboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="3" y="11" width="7" height="10"/><rect x="14" y="4" width="7" height="17"/><line x1="3" y1="21" x2="21" y2="21"/>
+          </svg>
+          <span class="text">Leaderboard</span>
+        </a></li>
+        
+        <li><a href="#" class="nav-link" data-tab="community">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span class="text">Community</span>
+        </a></li>
+        
+        <li><a href="#" class="nav-link" data-tab="rewards">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M6 9V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/><path d="M6 11h12v8a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-8z"/><path d="M9 5V3h6v2"/>
+          </svg>
+          <span class="text">Rewards</span>
+        </a></li>
+      </ul>
+      
+      <!-- Right Section: XP and User Avatar -->
+      <div class="navbar-right">
+        <div class="xp-display">
+          <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+          <span id="xp-count">620</span>
+        </div>
+        
+        <div class="user-avatar" title="User Profile">
+          <div class="user-avatar-inner">G</div>
+          <div class="user-level-badge">12</div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- MAIN CONTENT -->
+  <main class="container">
+    
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          <span class="hero-title-word">Cyber</span>
+          <span class="hero-title-word">Glow-Up</span>
+          <span class="hero-title-word">Challenge</span>
+        </h1>
+        
+        <p class="hero-tagline">— Know Your Strength. Protect Your Future. —</p>
+        
+        <div class="hero-info-box">
+          <h2 class="hero-info-title">What's Your Cyber Power?</h2>
+          <p class="hero-info-description">
+            Complete the missions, discover your strengths, and unlock the cyber future you're built for.
+          </p>
+        </div>
+        
+        <a href="quizzes.html" class="hero-cta" aria-label="Start the Challenge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="12" cy="12" r="1"/><path d="M12 2l3 8h8l-6.5 4.5 2.5 8L12 18 7.5 22l2.5-8L3 10h8l3-8z"/>
+          </svg>
+          <span>Start the Challenge</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      </div>
+      
+      <!-- ARCHETYPE CARDS CAROUSEL -->
+      <div class="archetype-cards">
+        <!-- Investigator Card -->
+        <div class="archetype-card investigator" title="Investigator - Magenta">
+          <div class="card-icon">🔍</div>
+          <h3 class="card-title">Investigator</h3>
+          <div class="card-silhouette">
+            <svg viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="40" cy="25" r="15" fill="currentColor" opacity="0.6"/>
+              <path d="M40 45 L30 70 L35 70 L35 110 L45 110 L45 70 L50 70 L40 45 M35 85 Q40 80 45 85" stroke="currentColor" stroke-width="2" fill="none" opacity="0.6"/>
+            </svg>
+          </div>
+          <div class="card-stars">
+            <span class="card-star">★</span>
+            <span class="card-star">★</span>
+            <span class="card-star">☆</span>
+          </div>
+        </div>
+        
+        <!-- Builder Card -->
+        <div class="archetype-card builder" title="Builder - Cyan">
+          <div class="card-icon">🔧</div>
+          <h3 class="card-title">Builder</h3>
+          <div class="card-silhouette">
+            <svg viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="40" cy="25" r="15" fill="currentColor" opacity="0.6"/>
+              <path d="M40 45 L30 70 L35 70 L35 110 L45 110 L45 70 L50 70 L40 45 M25 85 L55 85 M25 95 L55 95" stroke="currentColor" stroke-width="2" fill="none" opacity="0.6"/>
+            </svg>
+          </div>
+          <div class="card-stars">
+            <span class="card-star">★</span>
+            <span class="card-star">★</span>
+            <span class="card-star">☆</span>
+          </div>
+        </div>
+        
+        <!-- Protector Card (Featured) -->
+        <div class="archetype-card protector" title="Protector - Gold (Featured)">
+          <div class="card-icon">🛡️</div>
+          <h3 class="card-title">Protector</h3>
+          <div class="card-silhouette">
+            <svg viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="40" cy="25" r="15" fill="currentColor" opacity="0.6"/>
+              <path d="M40 45 L30 70 L35 70 L35 110 L45 110 L45 70 L50 70 L40 45 M30 75 L50 75 L48 90 Q40 95 32 90 Z" stroke="currentColor" stroke-width="2" fill="currentColor" opacity="0.6"/>
+            </svg>
+          </div>
+          <div class="card-stars">
+            <span class="card-star">★</span>
+            <span class="card-star">★</span>
+            <span class="card-star">★</span>
+          </div>
+        </div>
+        
+        <!-- Strategist Card -->
+        <div class="archetype-card strategist" title="Strategist - Blue">
+          <div class="card-icon">♞</div>
+          <h3 class="card-title">Strategist</h3>
+          <div class="card-silhouette">
+            <svg viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="40" cy="25" r="15" fill="currentColor" opacity="0.6"/>
+              <path d="M40 45 L30 70 L35 70 L35 110 L45 110 L45 70 L50 70 L40 45 M35 75 L45 75 M30 90 Q40 85 50 90" stroke="currentColor" stroke-width="2" fill="none" opacity="0.6"/>
+            </svg>
+          </div>
+          <div class="card-stars">
+            <span class="card-star">★</span>
+            <span class="card-star">★</span>
+            <span class="card-star">☆</span>
+          </div>
+        </div>
+        
+        <!-- Connector Card -->
+        <div class="archetype-card connector" title="Connector - Magenta">
+          <div class="card-icon">🕸️</div>
+          <h3 class="card-title">Connector</h3>
+          <div class="card-silhouette">
+            <svg viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="40" cy="25" r="15" fill="currentColor" opacity="0.6"/>
+              <path d="M40 45 L30 70 L35 70 L35 110 L45 110 L45 70 L50 70 L40 45 M25 85 L55 85 M35 75 L45 75 M30 95 L50 95" stroke="currentColor" stroke-width="2" fill="none" opacity="0.6"/>
+            </svg>
+          </div>
+          <div class="card-stars">
+            <span class="card-star">★</span>
+            <span class="card-star">☆</span>
+            <span class="card-star">☆</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- MISSION FLOW SECTION -->
+    <section class="mission-flow">
+      <div class="mission-flow-container">
+        <!-- Step 1: AI Reality Check -->
+        <div class="mission-step">
+          <div class="mission-step-number">01</div>
+          <svg class="mission-step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="12" cy="12" r="1"/><path d="M12 2v6m0 4v6M2 12h6m4 0h6"/><circle cx="12" cy="12" r="10" fill="none"/>
+          </svg>
+          <h3 class="mission-step-title">AI Reality Check</h3>
+          <p class="mission-step-description">Explore how AI shows up in your world—and what's real.</p>
+        </div>
+        
+        <!-- Step 2: Strength Quiz -->
+        <div class="mission-step">
+          <div class="mission-step-number">02</div>
+          <svg class="mission-step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12" fill="none"/>
+          </svg>
+          <h3 class="mission-step-title">Strength Quiz</h3>
+          <p class="mission-step-description">Answer fun questions to discover your top strengths.</p>
+        </div>
+        
+        <!-- Step 3: Career Reveal -->
+        <div class="mission-step">
+          <div class="mission-step-number">03</div>
+          <svg class="mission-step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.14L12 17.77L5.82 21.14L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+          </svg>
+          <h3 class="mission-step-title">Career Reveal</h3>
+          <p class="mission-step-description">Unlock careers that match your strengths and goals.</p>
+        </div>
+      </div>
+      
+      <!-- Progress Dots -->
+      <div class="mission-progress-dots">
+        <div class="progress-dot active"></div>
+        <div class="progress-dot active"></div>
+        <div class="progress-dot"></div>
+      </div>
+    </section>
+    
+    <!-- USER DASHBOARD -->
+    <section class="user-dashboard">
+      <div class="dashboard-grid">
+        
+        <!-- Level Widget -->
+        <div class="dashboard-widget">
+          <div class="widget-label">
+            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.14L12 17.77L5.82 21.14L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+            </svg>
+            Level
+          </div>
+          <div class="widget-value">
+            <span class="widget-value-main">12</span>
+          </div>
+          <div class="widget-badge">Rising Star</div>
+        </div>
+        
+        <!-- XP Progress Widget -->
+        <div class="dashboard-widget" style="grid-column: 1 / -1;">
+          <div class="widget-label">XP to Next Level</div>
+          <div class="xp-progress">
+            <div class="progress-label">
+              <span>620 / 900 XP</span>
+              <span id="xp-percentage">68%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Streak Widget -->
+        <div class="dashboard-widget">
+          <div class="widget-label">
+            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2m9 7h-6v13h-6v-6h-6v-7h4V4c0-1.1.9-2 2-2h1V2h4v2h1c1.1 0 2 .9 2 2z"/>
+            </svg>
+            7 Day Streak
+          </div>
+          <div class="streak-icons">
+            <span class="streak-icon">🔥</span>
+            <span class="streak-icon">🔥</span>
+            <span class="streak-icon">🔥</span>
+            <span class="streak-icon">🔥</span>
+            <span class="streak-icon">🔥</span>
+            <span class="streak-icon">🔥</span>
+            <span class="streak-icon">🔥</span>
+          </div>
+        </div>
+        
+        <!-- Power Points Widget -->
+        <div class="dashboard-widget">
+          <div class="widget-label">
+            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+            Power Points
+          </div>
+          <div class="widget-value">
+            <span class="widget-value-main">620</span>
+          </div>
+        </div>
+        
+        <!-- Glow Squad Widget -->
+        <div class="dashboard-widget">
+          <div class="widget-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            Glow Squad
+          </div>
+          <div class="glow-squad">
+            <div class="squad-count">24,318</div>
+            <div class="squad-label">members</div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+  </main>
+  
+  <!-- SCRIPTS -->
+  <script src="js/state.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/main.js"></script>
+  
+</body>
+</html>

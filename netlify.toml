@@ -1,0 +1,59 @@
+# Netlify Configuration for Cyber Glow-Up Challenge v2.0
+# Static site - no build process required
+
+[build]
+  # No build command needed (static files)
+  command = ""
+  # Publish directory - root of the project
+  publish = "/"
+
+[build.environment]
+  # Node version (optional, not used for static site)
+  NODE_VERSION = "18"
+
+# HTTP Headers for performance & security
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+# Cache CSS & JS files
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache HTML with validation
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# 404 error page redirect
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404
+
+# Environment variables (optional)
+# [context.production]
+#   environment = { NEXT_PUBLIC_API = "https://api.example.com" }
+
+# Branch deploys
+[context.branch-deploy]
+  command = ""
+  publish = "/"
+
+# Deploy preview
+[context.deploy-preview]
+  command = ""
+  publish = "/"
