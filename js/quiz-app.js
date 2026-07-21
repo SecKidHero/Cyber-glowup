@@ -321,9 +321,12 @@ const app = {
           <p><strong>Gaming Tag:</strong> ${this.state.gamingTag}</p>
         </div>
         
-        <a href="${archetype.niccsLink}" target="_blank" class="niccs-link">
-          Explore Cyber Career Pathways →
-        </a>
+        <div class="niccs-explore">
+          <p>If you want to explore these careers further, please click here:</p>
+          <a href="https://niccs.cisa.gov/tools/cyber-career-pathways-tool" target="_blank" class="niccs-link">
+            NICCS Cyber Career Pathways Tool →
+          </a>
+        </div>
       </div>
     `;
 
