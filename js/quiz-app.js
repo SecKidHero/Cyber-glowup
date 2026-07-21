@@ -238,7 +238,10 @@ const app = {
 
   // SHOW ANSWER FEEDBACK
   showAnswerFeedback(selectedIndex, correctIndex, isCorrect, questionData) {
+    console.log('showAnswerFeedback called:', { selectedIndex, correctIndex, isCorrect, hasExplanation: !!questionData.explanation });
+    
     const buttons = document.querySelectorAll('.quiz-answer-btn');
+    console.log('Found', buttons.length, 'answer buttons');
     
     buttons.forEach((btn, idx) => {
       if (idx === correctIndex) {
@@ -267,13 +270,14 @@ const app = {
     // Show feedback message
     const feedbackDiv = document.createElement('div');
     feedbackDiv.className = 'answer-feedback';
+    const correctAnswerText = questionData.answers[questionData.correct];
     feedbackDiv.innerHTML = `
       <div style="padding: 15px; margin-top: 15px; border-radius: 8px; border-left: 4px solid ${isCorrect ? '#00F0FF' : '#FF007A'}; background: ${isCorrect ? 'rgba(0, 240, 255, 0.1)' : 'rgba(255, 0, 122, 0.1)'};">
         <p style="margin: 0; color: ${isCorrect ? '#00F0FF' : '#FF007A'}; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">
           ${isCorrect ? '✓ Correct!' : '✗ Incorrect'}
         </p>
         ${!isCorrect ? `<p style="margin: 0; color: #FFFFFF; font-size: 0.95rem;">
-          <strong>Correct Answer:</strong> ${questionData.answers[questionData.correct]}
+          <strong>Correct Answer:</strong> ${correctAnswerText}
         </p>` : ''}
         ${questionData.explanation ? `<p style="margin: 8px 0 0 0; color: #94A3B8; font-size: 0.9rem;">
           ${questionData.explanation}
@@ -283,8 +287,12 @@ const app = {
 
     // Insert feedback after quiz question section
     const quizQuestion = document.querySelector('.quiz-question');
+    console.log('Found quiz-question:', !!quizQuestion);
     if (quizQuestion) {
       quizQuestion.appendChild(feedbackDiv);
+      console.log('Feedback div appended');
+    } else {
+      console.log('ERROR: quiz-question not found!');
     }
 
     // Show next button
